@@ -35,13 +35,11 @@ const appReducer = combineReducers({
   toasts: toastsReducer,
 });
 
-/** При выходе сбрасываем всё состояние: данные прошлого пользователя не должны остаться в памяти. */
 const rootReducer: Reducer<RootState, UnknownAction, Partial<RootState>> = (state, action) =>
   logout.pending.match(action) || deleteAccount.fulfilled.match(action)
     ? appReducer(undefined, action)
     : appReducer(state, action);
 
-/** Фабрика, а не синглтон: каждый тест и каждая story получает своё хранилище и свой API. */
 export function createStore(api: MixbackApi, preloadedState?: Partial<RootState>) {
   return configureStore({
     reducer: rootReducer,

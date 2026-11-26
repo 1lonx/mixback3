@@ -34,18 +34,15 @@ const STEPS: { status: OrderStatus; label: string }[] = [
   { status: 'completed', label: 'Завершён' },
 ];
 
-/** Номер текущего шага; у закрытых без результата заказов (отклонён, отменён) шкалы нет. */
 const stepIndex = (status: OrderStatus) => STEPS.findIndex((s) => s.status === status);
 
 interface ActionSpec {
   action: OrderAction;
   label: string;
   variant?: 'primary' | 'secondary' | 'danger';
-  /** Опасные действия требуют подтверждения. */
   confirm?: { title: string; description: string };
 }
 
-/** Что может сделать пользователь в каждом статусе — зеркало правил сервера, только для показа кнопок. */
 function actionsFor(order: OrderDetail): ActionSpec[] {
   const engineer = order.side === 'engineer';
   switch (order.status) {
@@ -170,7 +167,6 @@ export function OrderPage() {
       await dispatch(actOnOrder({ id: order.id, action: spec.action })).unwrap();
     } catch (failure) {
       dispatch(pushToast('error', errorMessage(failure, 'Не удалось выполнить действие')));
-      // Статус мог измениться с другой стороны — показываем актуальный.
       void dispatch(fetchOrder(order.id));
     } finally {
       setBusy(null);

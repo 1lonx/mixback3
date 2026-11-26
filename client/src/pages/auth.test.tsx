@@ -161,11 +161,10 @@ describe('авторизация и защита маршрутов', () => {
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent('Не удалось проверить вход');
     expect(alert).toHaveTextContent('Нет соединения с сервером');
-    expect(router.state.location.pathname).toBe('/projects'); // на форму входа не выбросило
+    expect(router.state.location.pathname).toBe('/projects');
 
     appApi.controls.set({ failNetwork: false });
     await userEvent.click(screen.getByRole('button', { name: 'Повторить' }));
-    // Пока проверка идёт, роутер на мгновение уходит на /login и возвращается по `from`: ждём итогового состояния.
     await waitFor(() => {
       expect(router.state.location.pathname).toBe('/projects');
       expect(screen.getByRole('link', { name: 'Ночной город' })).toBeInTheDocument();

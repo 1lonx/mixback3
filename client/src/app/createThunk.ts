@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AppApi } from '../api';
 import { serializeError, type SerializedError } from '../lib/errors';
 
-/** В `extra` лежит API: слайсы не знают, мок это или настоящий сервер. */
 export interface ThunkExtra {
   api: AppApi['api'];
 }
@@ -16,10 +15,6 @@ interface CallContext {
   api: AppApi['api'];
 }
 
-/**
- * Обёртка над createAsyncThunk: любую ошибку превращает в сериализуемую
- * `SerializedError` и отдаёт через rejectWithValue — в state попадает только простой объект.
- */
 export function apiThunk<Returned, Arg = void>(
   type: string,
   call: (arg: Arg, context: CallContext) => Promise<Returned>,

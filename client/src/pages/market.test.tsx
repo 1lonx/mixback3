@@ -6,7 +6,6 @@ import { createTestApi, renderApp, type TestApi } from '../test/utils';
 
 const heading = (name: string | RegExp, level = 1) => screen.findByRole('heading', { name, level });
 
-/** Звукорежиссёр Илья ведёт заказ Леры до статуса `completed`, но без отзыва. */
 async function completedOrderWithoutReview(appApi: TestApi) {
   const { api } = appApi;
   const ilya = await api.engineers.get(DEMO_ENGINEERS[0].id);
@@ -244,7 +243,6 @@ describe('список заказов', () => {
 
   it('переключатель роли и фильтр статуса меняют список и адрес', async () => {
     const { router } = await renderApp({ route: '/orders', as: 'owner' });
-    // как заказчик Алекс заказывал у Ильи и Киры (завершённые заказы из seed)
     expect(await screen.findByRole('link', { name: 'Сведение рок-трека' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Сведение живого ансамбля' })).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Мастеринг под стриминг' })).not.toBeInTheDocument();

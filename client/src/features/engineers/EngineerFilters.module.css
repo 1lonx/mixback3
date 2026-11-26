@@ -8,7 +8,6 @@
   grid-column: 1 / -1;
 }
 
-/* Сортировка живёт в одной строке с остальными фильтрами, поиск — над ними */
 @media (min-width: 960px) {
   .filters {
     grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr));

@@ -32,7 +32,6 @@ const STEPS = [
   ['Оставьте правки', 'Отметьте на волне, что поправить, и примите готовую работу.'],
 ] as const;
 
-/** Главная: что такое Mixback и с чего начать. Открыта всем, в том числе гостям. */
 export function HomePage() {
   useDocumentTitle('Mixback — звукорежиссёры и правки на волне');
   const user = useAppSelector(selectUser);

@@ -10,7 +10,6 @@ export interface ButtonStyleOptions {
   className?: string;
 }
 
-/** Классы кнопки — чтобы так же оформлять ссылки (<Link>), не дублируя CSS. */
 export function buttonClassName({
   variant = 'primary',
   size = 'md',

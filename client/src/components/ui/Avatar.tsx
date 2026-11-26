@@ -6,7 +6,6 @@ interface AvatarProps {
   size?: number;
 }
 
-/** Декоративный аватар: имя рядом уже есть текстом, поэтому для скринридера он скрыт. */
 export function Avatar({ name, size = 36 }: AvatarProps) {
   const hue = hueOf(name);
   return (

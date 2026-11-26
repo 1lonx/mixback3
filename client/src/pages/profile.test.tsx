@@ -45,7 +45,6 @@ describe('ProfilePage', () => {
     await userEvent.click(screen.getByRole('link', { name: 'Профиль' }));
     await screen.findByRole('heading', { name: 'Алекс', level: 1 });
     expect(router.state.location.pathname).toBe('/profile');
-    // После перехода меню закрыто
     expect(screen.queryByRole('link', { name: 'Настройки' })).not.toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: 'Алекс' }));

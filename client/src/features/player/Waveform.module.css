@@ -4,7 +4,6 @@
   gap: 6px;
 }
 
-/* Дорожка флажков: позиция в процентах от длины трека */
 .markers {
   position: relative;
   height: 22px;

@@ -55,21 +55,14 @@ export interface NewTrackInput extends TrackInput {
   analysis: AudioAnalysis;
 }
 
-/**
- * Контракт клиента с «сервером». Сейчас его реализует localStorage-мок
- * (`api/local`), на этапе 4 — HTTP-клиент с теми же методами и теми же ошибками.
- * Redux-слои знают только этот интерфейс.
- */
 export interface MixbackApi {
   auth: {
     register(input: RegisterInput): Promise<Session>;
     login(input: LoginInput): Promise<Session>;
     logout(): Promise<void>;
-    /** Текущий пользователь по сохранённой сессии или null. */
     me(): Promise<User | null>;
     profile(): Promise<Profile>;
     updateProfile(input: { name: string }): Promise<User>;
-    /** Меняет пароль и выдаёт новую сессию (старый токен перестаёт действовать). */
     changePassword(input: { currentPassword: string; newPassword: string }): Promise<Session>;
     deleteAccount(input: { password: string }): Promise<void>;
   };
@@ -83,7 +76,6 @@ export interface MixbackApi {
   };
   versions: {
     create(projectId: string, input: NewVersionInput): Promise<Version>;
-    /** Адрес, по которому плеер сможет загрузить аудио версии или работы из портфолио. */
     audioUrl(file: Pick<Version, 'id' | 'fileUrl'>): Promise<string>;
   };
   comments: {
@@ -97,16 +89,12 @@ export interface MixbackApi {
     generate(versionId: string): Promise<Checklist>;
     toggle(versionId: string, itemId: string, done: boolean): Promise<Checklist>;
   };
-  /** Каталог и профили звукорежиссёров. `list` и `get` открыты и гостям. */
   engineers: {
     list(query: EngineersQuery): Promise<EngineerSummary[]>;
     get(userId: string): Promise<EngineerDetail>;
-    /** Собственная анкета для редактирования; null, пока пользователь не стал звукорежиссёром. */
     mine(): Promise<MyEngineer | null>;
     save(input: EngineerInput): Promise<EngineerProfile>;
-    /** Сколько анкет опубликовано в каталоге — без учёта фильтров. */
     count(): Promise<number>;
-    /** Загрузка обложки анкеты; null удаляет её. */
     setCover(image: Blob | null): Promise<EngineerProfile>;
     addTrack(input: NewTrackInput): Promise<PortfolioTrack>;
     removeTrack(id: string): Promise<void>;
@@ -115,11 +103,9 @@ export interface MixbackApi {
     list(query: OrdersQuery): Promise<OrderView[]>;
     get(id: string): Promise<OrderDetail>;
     create(input: OrderInput): Promise<Order>;
-    /** Переход заказа по статусам; допустимость проверяет сервер. */
     act(id: string, action: OrderAction): Promise<OrderDetail>;
     review(id: string, input: ReviewInput): Promise<Review>;
   };
-  /** Переписка по заказу: доступна только его участникам. */
   messages: {
     list(orderId: string): Promise<Message[]>;
     send(orderId: string, input: MessageInput): Promise<Message>;

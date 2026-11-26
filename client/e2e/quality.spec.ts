@@ -2,7 +2,6 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { loginAsDemo, waitForPlayerReady } from './helpers';
 
-/** Серьёзные нарушения доступности (WCAG A/AA) должны быть исключены. */
 async function expectNoA11yViolations(page: Page) {
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])

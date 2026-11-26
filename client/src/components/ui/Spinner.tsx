@@ -2,7 +2,6 @@ import styles from './Spinner.module.css';
 
 interface SpinnerProps {
   size?: number;
-  /** Подпись для скринридера. Пустая строка — спиннер декоративный (рядом уже есть текст). */
   label?: string;
 }
 

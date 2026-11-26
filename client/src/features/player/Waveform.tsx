@@ -18,11 +18,6 @@ interface WaveformProps {
   comments: readonly Comment[];
 }
 
-/**
- * Волна + дорожка с флажками правок.
- * Сама волна — slider (доступен с клавиатуры), флажки — отдельные кнопки над ней:
- * интерактивные элементы нельзя вкладывать в slider.
- */
 export function Waveform({
   containerRef,
   controls,

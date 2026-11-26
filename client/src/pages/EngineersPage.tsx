@@ -45,7 +45,6 @@ function SkeletonGrid() {
   );
 }
 
-/** Каталог звукорежиссёров — витрина сервиса. Открыт и гостям: смотреть можно без входа. */
 export function EngineersPage() {
   useDocumentTitle('Звукорежиссёры');
   const dispatch = useAppDispatch();
@@ -182,7 +181,6 @@ export function EngineersPage() {
         </p>
       )}
 
-      {/* Результат поиска объявляется скринридером без перехода фокуса */}
       <p className="visually-hidden" role="status">
         {status === 'loading' || status === 'idle'
           ? 'Загружаем каталог…'

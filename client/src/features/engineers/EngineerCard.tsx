@@ -18,7 +18,6 @@ export function EngineerCard({ engineer }: { engineer: EngineerSummary }) {
         <Avatar name={engineer.name} size={48} />
         <div className={styles.who}>
           <h3 className={styles.name}>
-            {/* Растянутая ссылка: кликабельна вся карточка, но для скринридера это одна ссылка с именем. */}
             <Link to={`/engineers/${engineer.userId}`} className={styles.link}>
               {engineer.name}
             </Link>

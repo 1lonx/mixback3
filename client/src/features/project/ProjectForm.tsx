@@ -9,14 +9,11 @@ import styles from './ProjectForm.module.css';
 
 interface ProjectFormProps {
   initial?: ProjectInput;
-  /** В режиме создания статус не выбирается: новый проект всегда «в работе». */
   showStatus: boolean;
   submitLabel: string;
   onSubmit: (values: ProjectInput) => Promise<void>;
   onCancel: () => void;
-  /** Ошибки сервера по полям — показываются рядом с полями. */
   serverErrors?: FieldErrors;
-  /** Общая ошибка, не относящаяся к конкретному полю. */
   formError?: string;
 }
 

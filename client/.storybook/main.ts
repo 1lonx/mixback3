@@ -5,7 +5,6 @@ const config: StorybookConfig = {
   addons: ['@storybook/addon-a11y'],
   framework: { name: '@storybook/react-vite', options: {} },
   core: { disableTelemetry: true },
-  // Демо-трек (7 МБ) историям не нужен — не тащим его в сборку Storybook.
   viteFinal: (config) => ({ ...config, publicDir: false }),
 };
 

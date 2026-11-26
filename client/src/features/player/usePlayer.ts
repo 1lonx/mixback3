@@ -4,17 +4,13 @@ import { clamp } from '../../lib/format';
 import { cssColor, useResolvedTheme } from '../../lib/theme';
 
 interface PlayerOptions {
-  /** Адрес аудио. null — пока не получен. */
   url: string | null;
-  /** Готовые пики: волна рисуется мгновенно, без декодирования файла. */
   peaks: number[] | null;
   durationSec: number;
-  /** Громкость 0..1 (для выравнивания версий по LUFS). */
   volume: number;
 }
 
 interface PlayerState {
-  /** Адрес, для которого волна готова: «готовность» выводится из него, а не хранится флагом. */
   readyUrl: string | null;
   playing: boolean;
   currentTime: number;
@@ -30,17 +26,11 @@ export interface PlayerControls {
 
 const TIME_STEP = 0.25;
 
-/**
- * Обёртка над wavesurfer.js. Один экземпляр живёт, пока открыт плеер;
- * при смене версии грузится новый файл, а позиция и состояние «играет»
- * сохраняются — так версии можно сравнивать на одном и том же месте (A/B).
- */
 export function usePlayer({ url, peaks, durationSec, volume }: PlayerOptions) {
   const containerRef = useRef<HTMLDivElement>(null);
   const wsRef = useRef<WaveSurfer | null>(null);
   const resumeRef = useRef<{ time: number; play: boolean } | null>(null);
   const volumeRef = useRef(volume);
-  /** Адрес, который грузится прямо сейчас: по нему отличаем свежие события от запоздалых. */
   const loadingUrlRef = useRef<string | null>(null);
 
   const [state, setState] = useState<PlayerState>({
@@ -51,7 +41,6 @@ export function usePlayer({ url, peaks, durationSec, volume }: PlayerOptions) {
     failure: null,
   });
 
-  // 1. Создаём плеер один раз.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -108,18 +97,16 @@ export function usePlayer({ url, peaks, durationSec, volume }: PlayerOptions) {
     };
   }, []);
 
-  // 2. Загружаем файл при смене версии.
   useEffect(() => {
     const ws = wsRef.current;
     if (!ws || !url) return;
     resumeRef.current = { time: ws.getCurrentTime(), play: ws.isPlaying() };
     loadingUrlRef.current = url;
-    ws.load(url, peaks ? [Float32Array.from(peaks)] : undefined, durationSec).catch(() => {
-      // Ошибку покажет обработчик события 'error'.
-    });
+    ws.load(url, peaks ? [Float32Array.from(peaks)] : undefined, durationSec).catch(
+      () => undefined,
+    );
   }, [url, peaks, durationSec]);
 
-  // 2b. Смена темы перекрашивает волну без перезагрузки аудио.
   const theme = useResolvedTheme();
   useEffect(() => {
     wsRef.current?.setOptions({
@@ -129,7 +116,6 @@ export function usePlayer({ url, peaks, durationSec, volume }: PlayerOptions) {
     });
   }, [theme]);
 
-  // 3. Громкость применяется сразу и запоминается для следующей загрузки.
   useEffect(() => {
     volumeRef.current = volume;
     wsRef.current?.setVolume(volume);

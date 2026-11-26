@@ -7,7 +7,6 @@ import type { SerializedError } from '../../lib/errors';
 import type { EngineerInput } from '../../lib/schemas';
 import type { MyEngineer } from '../../types/domain';
 
-// `void` — идиома RTK: thunk без аргумента.
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
 export const fetchMyEngineer = apiThunk('mine/fetch', (_: void, { api }) => api.engineers.mine());
 /* eslint-enable @typescript-eslint/no-invalid-void-type */
@@ -30,7 +29,6 @@ export const removeTrack = apiThunk('mine/removeTrack', async (id: string, { api
 });
 
 export interface MineState {
-  /** null после загрузки — пользователь ещё не заполнял анкету. */
   data: MyEngineer | null;
   status: LoadStatus;
   error: SerializedError | null;

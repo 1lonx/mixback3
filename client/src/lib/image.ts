@@ -1,9 +1,7 @@
 import { MAX_COVER_BYTES } from './schemas';
 
-/** Обложка рисуется в 16:9; больше 1280 px в каталоге не нужно. */
 const MAX_SIDE = 1280;
 
-/** Сжимает картинку до JPEG ≤ MAX_COVER_BYTES: понижает качество, затем размер. */
 export async function compressImage(file: Blob): Promise<Blob> {
   let bitmap: ImageBitmap;
   try {

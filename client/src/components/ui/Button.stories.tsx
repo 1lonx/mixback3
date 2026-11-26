@@ -22,7 +22,6 @@ export const Small: Story = { args: { size: 'sm', children: 'Решено' } };
 export const Loading: Story = { args: { loading: true, children: 'Сохраняем…' } };
 export const Disabled: Story = { args: { disabled: true } };
 
-/** Все варианты рядом — удобно для скриншота и сравнения. */
 export const Showcase: Story = {
   render: () => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, maxWidth: 520 }}>

@@ -11,7 +11,6 @@ import styles from './ReviewForm.module.css';
 
 const RATING_HINTS = ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'] as const;
 
-/** Оценка 1–5 на радиокнопках: стрелки и скринридер работают из коробки, звёзды — только оформление. */
 export function ReviewForm({ orderId }: { orderId: string }) {
   const dispatch = useAppDispatch();
   const [rating, setRating] = useState<number | null>(null);

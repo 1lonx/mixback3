@@ -2,10 +2,6 @@ import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4173;
 
-/**
- * E2E на собранном приложении (vite preview), как у пользователя в production.
- * VITE_MOCK_LATENCY_MS=0 отключает искусственную задержку «сети», чтобы тесты были быстрыми.
- */
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: false,
@@ -16,7 +12,6 @@ export default defineConfig({
   use: {
     baseURL: `http://127.0.0.1:${PORT}`,
     trace: 'retain-on-failure',
-    // Анимации GSAP отключаются при reduced-motion — тесты и axe не зависят от кадра анимации.
     reducedMotion: 'reduce',
     screenshot: 'only-on-failure',
     launchOptions: { args: ['--autoplay-policy=no-user-gesture-required'] },

@@ -30,10 +30,8 @@ export function AuthForm() {
   const [values, setValues] = useState({ name: '', email: '', password: '' });
   const [clientErrors, setClientErrors] = useState<FieldErrors>({});
 
-  // Уходя со страницы, не оставляем старую ошибку входа в общем состоянии.
   useEffect(() => () => void dispatch(clearAuthError()), [dispatch]);
 
-  // Ошибки с сервера (например, «e-mail занят») показываем рядом с полями так же, как клиентские.
   const fieldErrors: FieldErrors = { ...error?.fieldErrors, ...clientErrors };
   const formError = error && !error.fieldErrors ? error.message : undefined;
 

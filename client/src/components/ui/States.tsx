@@ -9,7 +9,6 @@ interface EmptyStateProps {
   action?: ReactNode;
 }
 
-/** «Пустой результат»: объясняет, почему тут пусто, и предлагает следующий шаг. */
 export function EmptyState({ title, description, action }: EmptyStateProps) {
   return (
     <div className={styles.state}>
@@ -29,7 +28,6 @@ interface ErrorStateProps {
   onRetry?: () => void;
 }
 
-/** «Ошибка»: сообщение объявляется скринридером, есть кнопка повтора. */
 export function ErrorState({
   title = 'Не удалось загрузить данные',
   message,
@@ -51,7 +49,6 @@ export function ErrorState({
   );
 }
 
-/** «Загрузка» для небольших блоков. Для списков используйте <Skeleton />. */
 export function LoadingState({ label = 'Загружаем…' }: { label?: string }) {
   return (
     <div className={styles.state} role="status" aria-live="polite">

@@ -19,7 +19,6 @@
   transition: opacity 0.15s;
 }
 
-/* Список поверх старых данных во время обновления слегка притушен */
 .grid[data-loading='true'] {
   opacity: 0.6;
 }

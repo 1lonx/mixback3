@@ -29,7 +29,6 @@ function ToastItem({ toast }: { toast: Toast }) {
   );
 }
 
-/** Контейнер объявляется скринридером (aria-live), поэтому новые уведомления зачитываются сами. */
 export function ToastRegion() {
   const toasts = useAppSelector(selectToasts);
   return (

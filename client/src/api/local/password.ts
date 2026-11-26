@@ -7,11 +7,6 @@ export function randomHex(byteLength = 16): string {
 
 export const PBKDF2_ITERATIONS = 100_000;
 
-/**
- * Хеш пароля: PBKDF2-HMAC-SHA256 с индивидуальной солью (Web Crypto, 100 000 итераций).
- * Это защита от хранения пароля открытым текстом и от быстрого перебора по украденной базе.
- * Полноценные argon2/bcrypt и серверные сессии — задача бэкенда (этап 4).
- */
 export async function hashPassword(password: string, salt: string): Promise<string> {
   const key = await crypto.subtle.importKey(
     'raw',
@@ -33,7 +28,6 @@ export async function hashPassword(password: string, salt: string): Promise<stri
   return toHex(new Uint8Array(bits));
 }
 
-/** Сравнение без раннего выхода: время не зависит от того, в каком символе хеши разошлись. */
 export function safeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
   let diff = 0;

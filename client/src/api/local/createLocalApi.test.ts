@@ -444,7 +444,7 @@ describe('createLocalApi', () => {
       expect(checklist.items.length).toBeGreaterThan(0);
       expect(checklist.items.every((i) => !i.done)).toBe(true);
       const covered = checklist.items.flatMap((i) => i.commentIds);
-      expect(covered).not.toContain('c_seed_7'); // решённая
+      expect(covered).not.toContain('c_seed_7');
       expect(await api.checklist.get('v_p_night_3')).toEqual(checklist);
     });
 

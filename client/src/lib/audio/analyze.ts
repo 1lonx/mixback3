@@ -11,11 +11,6 @@ export interface AudioAnalysis {
 
 export const PEAK_BUCKETS = 800;
 
-/**
- * Декодирует аудиофайл средствами браузера и считает всё, что нужно версии:
- * длительность, пики для волны, громкость (LUFS) и пик.
- * Тяжёлая математика вынесена в чистые функции peaks.ts / loudness.ts — они покрыты тестами.
- */
 export async function analyzeAudioFile(file: Blob): Promise<AudioAnalysis> {
   const Ctx = window.AudioContext;
   const buffer = await file.arrayBuffer();
@@ -30,7 +25,6 @@ export async function analyzeAudioFile(file: Blob): Promise<AudioAnalysis> {
     return {
       durationSec: decoded.duration,
       peaks: computePeaks(channels, PEAK_BUCKETS),
-      // −Infinity нельзя хранить в JSON — для тишины подставляем нижнюю границу шкалы.
       lufs: Number.isFinite(lufs) ? Math.round(lufs * 10) / 10 : -70,
       peakDb: Number.isFinite(peakDb) ? Math.round(peakDb * 10) / 10 : -120,
     };

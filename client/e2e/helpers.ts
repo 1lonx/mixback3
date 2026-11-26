@@ -1,6 +1,5 @@
 import { expect, type Page } from '@playwright/test';
 
-/** WAV-файл с синусом 997 Гц: настоящий аудиофайл, который браузер сможет декодировать. */
 export function makeWav({ seconds = 3, amplitudeDb = -12, sampleRate = 44100 } = {}) {
   const samples = seconds * sampleRate;
   const buffer = Buffer.alloc(44 + samples * 2);
@@ -8,8 +7,8 @@ export function makeWav({ seconds = 3, amplitudeDb = -12, sampleRate = 44100 } =
   buffer.writeUInt32LE(36 + samples * 2, 4);
   buffer.write('WAVEfmt ', 8);
   buffer.writeUInt32LE(16, 16);
-  buffer.writeUInt16LE(1, 20); // PCM
-  buffer.writeUInt16LE(1, 22); // моно
+  buffer.writeUInt16LE(1, 20);
+  buffer.writeUInt16LE(1, 22);
   buffer.writeUInt32LE(sampleRate, 24);
   buffer.writeUInt32LE(sampleRate * 2, 28);
   buffer.writeUInt16LE(2, 32);
@@ -32,7 +31,6 @@ export async function loginAsDemo(page: Page, who: 'owner' | 'artist') {
   await expect(page.getByRole('heading', { name: 'Проекты', level: 1 })).toBeVisible();
 }
 
-/** Открывает выпадающее меню аккаунта в шапке. */
 export async function openUserMenu(page: Page) {
   await page.getByRole('banner').locator('button[aria-expanded]').click();
 }
@@ -43,7 +41,6 @@ export async function logout(page: Page) {
   await expect(page.getByRole('form', { name: 'Вход' })).toBeVisible();
 }
 
-/** Дожидается, пока волна загрузится и плеер готов к воспроизведению. */
 export async function waitForPlayerReady(page: Page) {
   await expect(page.getByRole('button', { name: 'Играть' })).toBeEnabled({ timeout: 30_000 });
 }

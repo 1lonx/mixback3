@@ -90,7 +90,6 @@ export function EngineerEditPage() {
         )}
       </header>
 
-      {/* Ключ по времени сохранения: после сохранения форма берёт ID услуг, присвоенные сервером. */}
       <EngineerForm
         key={profile?.updatedAt ?? 'new'}
         profile={profile}

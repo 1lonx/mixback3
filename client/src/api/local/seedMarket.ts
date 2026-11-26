@@ -165,7 +165,6 @@ export interface MarketSeed {
   messages: Message[];
 }
 
-/** Каталог, портфолио, отзывы и два живых заказа Алекса. `at(n)` — дата «n дней назад». */
 export function createMarketSeed(at: (daysAgo: number) => string): MarketSeed {
   const engineers: EngineerProfile[] = [];
   const portfolio: PortfolioTrack[] = [];
@@ -232,7 +231,6 @@ export function createMarketSeed(at: (daysAgo: number) => string): MarketSeed {
   const orders: Order[] = [];
   const reviews: Review[] = [];
 
-  // Каждый отзыв опирается на завершённый заказ: рейтинг нельзя получить «просто так».
   REVIEWS.forEach(([engineerId, authorId, rating, text, daysAgo], i) => {
     const picked = service(engineerId);
     const orderId = `o_seed_${i + 1}`;
@@ -258,7 +256,6 @@ export function createMarketSeed(at: (daysAgo: number) => string): MarketSeed {
     });
   });
 
-  // Живой заказ идёт в проекте «Ночной город», где Лера уже оставила правки.
   orders.push(
     order('o_night', DEMO_OWNER.id, DEMO_ARTIST.id, service(DEMO_OWNER.id, 0), {
       brief: 'Сингл в стиле synth-pop. Нужно подтянуть вокал и убрать муть в низах.',
@@ -268,7 +265,6 @@ export function createMarketSeed(at: (daysAgo: number) => string): MarketSeed {
       createdAt: at(11),
       updatedAt: at(1),
     }),
-    // И новый заказ — на него Алексу ещё предстоит ответить.
     order('o_master', DEMO_OWNER.id, DEMO_ARTIST.id, service(DEMO_OWNER.id, 1), {
       brief: 'Мастеринг готового микса под стриминг, референс — любой трек Dua Lipa.',
       status: 'pending',

@@ -13,7 +13,6 @@ export function ProjectCard({ project }: { project: ProjectSummary }) {
         {project.role === 'artist' && <RoleBadge value={project.role} />}
       </div>
       <h3 className={styles.title}>
-        {/* Растянутая ссылка: кликабельна вся карточка, но для скринридера это одна ссылка с названием. */}
         <Link to={`/projects/${project.id}`} className={styles.link}>
           {project.title}
         </Link>

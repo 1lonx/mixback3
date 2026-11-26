@@ -42,7 +42,6 @@ export interface ProjectState {
   detail: ProjectDetail | null;
   status: LoadStatus;
   error: SerializedError | null;
-  /** id последнего запроса: ответы на устаревшие запросы игнорируются. */
   currentRequestId: string | null;
 }
 
@@ -63,7 +62,6 @@ const projectSlice = createSlice({
         state.status = 'loading';
         state.error = null;
         state.currentRequestId = action.meta.requestId;
-        // Другой проект — не показываем чужие данные, пока грузится новый.
         if (state.detail?.project.id !== action.meta.arg) state.detail = null;
       })
       .addCase(fetchProject.fulfilled, (state, action) => {

@@ -1,6 +1,5 @@
 export type FieldErrors = Record<string, string>;
 
-/** Ошибка API. Статусы совпадают с HTTP, поэтому та же обработка будет работать с реальным сервером. */
 export class ApiError extends Error {
   readonly status: number;
   readonly code: string;
@@ -15,7 +14,6 @@ export class ApiError extends Error {
   }
 }
 
-/** Сериализуемая форма ошибки: в Redux нельзя класть экземпляры классов. */
 export interface SerializedError {
   status: number;
   code: string;
@@ -58,6 +56,5 @@ export function isSerializedError(value: unknown): value is SerializedError {
   );
 }
 
-/** Текст ошибки для пользователя: сообщение сервера или запасной вариант. */
 export const errorMessage = (error: unknown, fallback: string): string =>
   isSerializedError(error) ? error.message : fallback;

@@ -15,7 +15,6 @@ const toastsSlice = createSlice({
   reducers: {
     pushToast: {
       reducer: (state, action: PayloadAction<Toast>) => {
-        // Не копим больше четырёх уведомлений: старые вытесняются.
         state.push(action.payload);
         if (state.length > 4) state.shift();
       },

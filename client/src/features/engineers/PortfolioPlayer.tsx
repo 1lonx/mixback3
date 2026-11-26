@@ -11,11 +11,9 @@ import styles from './PortfolioPlayer.module.css';
 
 interface StageProps {
   track: PortfolioTrack;
-  /** Начать играть, как только волна готова: пользователь сам выбрал эту работу. */
   autoPlay: boolean;
 }
 
-/** Один плеер на весь список: волна рисуется только у выбранной работы, остальные — просто строки. */
 function Stage({ track, autoPlay }: StageProps) {
   const { url, error } = useAudioUrl(track);
   const player = usePlayer({ url, peaks: track.peaks, durationSec: track.durationSec, volume: 1 });
@@ -23,7 +21,6 @@ function Stage({ track, autoPlay }: StageProps) {
 
   const startedRef = useRef(false);
   useEffect(() => {
-    // Один раз за жизнь компонента (key = id работы): повторный «ready» не должен снова нажимать «Играть».
     if (autoPlay && ready && !startedRef.current) {
       startedRef.current = true;
       controls.toggle();

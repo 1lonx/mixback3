@@ -303,7 +303,6 @@ describe('маркетплейс в мок-API', () => {
     it('повторный заказ той же услуги, пока первый не закрыт, — 409', async () => {
       const service = await serviceOf(DEMO_OWNER.id, 1);
       await login(DEMO_ARTIST);
-      // в seed у Леры уже есть открытый заказ на мастеринг у Алекса
       await expectApiError(
         api.orders.create({
           engineerId: DEMO_OWNER.id,
@@ -317,7 +316,6 @@ describe('маркетплейс в мок-API', () => {
   });
 
   describe('заказы: жизненный цикл', () => {
-    /** Лера заказывает сведение у Ильи; возвращает id заказа. */
     async function placeOrder() {
       const ilya = await api.engineers.get(DEMO_ENGINEERS[0].id);
       await login(DEMO_ARTIST);
@@ -370,13 +368,10 @@ describe('маркетплейс в мок-API', () => {
 
     it('проверяет, кто и из какого статуса может сделать переход', async () => {
       const id = await placeOrder();
-      // заказчик не может принять собственный заказ
       await expectApiError(api.orders.act(id, 'accept'), 403);
       await asIlya();
-      // звукарь не может принять работу, которую ещё не сдавал
       await expectApiError(api.orders.act(id, 'complete'), 403);
       await api.orders.act(id, 'accept');
-      // принять второй раз — статус уже другой
       await expectApiError(api.orders.act(id, 'accept'), 409, 'INVALID_TRANSITION');
       await expectApiError(api.orders.act(id, 'decline'), 409, 'INVALID_TRANSITION');
     });
@@ -420,7 +415,7 @@ describe('маркетплейс в мок-API', () => {
       const id = await placeOrder();
       await expectApiError(api.orders.review(id, { rating: 5, text: '' }), 409, 'NOT_COMPLETED');
 
-      const seeded = 'o_seed_3'; // завершённый заказ Леры у Ильи с уже оставленным отзывом
+      const seeded = 'o_seed_3';
       await expectApiError(
         api.orders.review(seeded, { rating: 1, text: '' }),
         409,
@@ -433,8 +428,6 @@ describe('маркетплейс в мок-API', () => {
 
     it('оценка должна быть от 1 до 5', async () => {
       await login(DEMO_ARTIST);
-      // заказ o_night идёт, поэтому сначала убеждаемся, что проверка оценки срабатывает раньше статуса не нужна:
-      // создаём завершённый заказ без отзыва через полный цикл
       const id = await placeOrder();
       await asIlya();
       const accepted = await api.orders.act(id, 'accept');
@@ -454,7 +447,6 @@ describe('маркетплейс в мок-API', () => {
       expect((await api.orders.act(id, 'cancel')).status).toBe('cancelled');
       expect((await api.projects.get(accepted.projectId!)).project.status).toBe('archived');
 
-      // после закрытия ту же услугу можно заказать снова
       const again = await placeOrder();
       await asIlya();
       expect((await api.orders.act(again, 'decline')).status).toBe('declined');

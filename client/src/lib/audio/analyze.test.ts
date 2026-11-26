@@ -58,6 +58,6 @@ describe('analyzeAudioFile', () => {
       code: 'UNSUPPORTED_AUDIO',
       message: expect.stringContaining('Не удалось прочитать аудио') as string,
     });
-    expect(close).toHaveBeenCalledTimes(1); // контекст освобождается и при ошибке
+    expect(close).toHaveBeenCalledTimes(1);
   });
 });

@@ -46,7 +46,6 @@ export function CommentList({ versionId, userId, role, currentTime, onSeek }: Co
   const all = useAppSelector(selectAllComments);
   const visible = useAppSelector((state) => selectFilteredComments(state, filter));
 
-  // Подсвечиваем правку, на которой «стоит» воспроизведение: последнюю с таймкодом ≤ текущего.
   const activeId = [...all].reverse().find((c) => c.timeSec <= currentTime + 0.5)?.id;
 
   const toggleResolved = (comment: Comment) => {

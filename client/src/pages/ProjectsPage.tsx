@@ -61,7 +61,6 @@ export function ProjectsPage() {
     [setSearchParams],
   );
 
-  // Адрес → запрос данных. Устаревшие ответы отбрасывает слайс (см. currentRequestId).
   const { q, status: statusFilter, sort } = query;
   const load = useCallback(() => {
     void dispatch(fetchProjects({ q, status: statusFilter, sort }));
@@ -132,7 +131,6 @@ export function ProjectsPage() {
 
       <ProjectFilters query={query} onChange={updateQuery} />
 
-      {/* Результат поиска объявляется скринридером без перехода фокуса */}
       <p className="visually-hidden" role="status">
         {status === 'loading' || status === 'idle'
           ? 'Загружаем проекты…'

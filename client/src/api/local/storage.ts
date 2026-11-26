@@ -1,4 +1,3 @@
-/** Минимальный интерфейс, совместимый с window.localStorage. */
 export interface KeyValueStore {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
@@ -14,10 +13,6 @@ export function createMemoryStorage(initial: Record<string, string> = {}): KeyVa
   };
 }
 
-/**
- * localStorage может бросать исключения (приватный режим, запрет cookies, переполнение).
- * Оборачиваем его, чтобы приложение деградировало до работы в памяти, а не падало.
- */
 export function createBrowserStorage(): KeyValueStore {
   const fallback = createMemoryStorage();
   let usable = true;

@@ -21,7 +21,6 @@ export function AppLayout() {
     void dispatch(restoreSession());
   }, [dispatch]);
 
-  // Мягкий переход между страницами: содержимое выезжает снизу и проявляется.
   const mainRef = useRef<HTMLElement>(null);
   const { pathname } = useLocation();
   useGSAP(

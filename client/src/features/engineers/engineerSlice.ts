@@ -24,7 +24,6 @@ const initialState: EngineerState = {
   currentRequestId: null,
 };
 
-/** Пересчёт рейтинга после нового отзыва: ровно так же считает сервер. */
 function withReview(detail: EngineerDetail, review: Review): EngineerDetail {
   const reviews = [review, ...detail.reviews];
   const average = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
@@ -46,7 +45,6 @@ const engineerSlice = createSlice({
         state.status = 'loading';
         state.error = null;
         state.currentRequestId = action.meta.requestId;
-        // Другой звукорежиссёр — не показываем чужой профиль, пока грузится новый.
         if (state.detail?.userId !== action.meta.arg) state.detail = null;
       })
       .addCase(fetchEngineer.fulfilled, (state, action) => {

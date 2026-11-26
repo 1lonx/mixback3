@@ -3,7 +3,6 @@ import { Spinner } from './Spinner';
 import { buttonClassName, type ButtonStyleOptions } from './buttonClassName';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, ButtonStyleOptions {
-  /** Показывает спиннер и блокирует повторное нажатие. */
   loading?: boolean;
 }
 

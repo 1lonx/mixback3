@@ -15,9 +15,7 @@ const adapter = createEntityAdapter<ProjectSummary>();
 export interface ProjectsState {
   status: LoadStatus;
   error: SerializedError | null;
-  /** Запрос, чей ответ сейчас актуален (быстрый ввод в поиск порождает гонку запросов). */
   currentRequestId: string | null;
-  /** Параметры, с которыми загружен текущий список: нужны, чтобы отличить «нет проектов» от «ничего не нашлось». */
   loadedQuery: ProjectsQuery | null;
 }
 

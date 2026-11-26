@@ -36,7 +36,6 @@ function Icon({ preference }: { preference: ThemePreference }) {
   );
 }
 
-/** Циклически переключает тему: система → светлая → тёмная. */
 export function ThemeToggle() {
   const preference = useThemePreference();
   return (

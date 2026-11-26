@@ -1,4 +1,3 @@
-/** 82 → «1:22», 3725 → «1:02:05» */
 export function formatTime(totalSeconds: number): string {
   const safe = Number.isFinite(totalSeconds) && totalSeconds > 0 ? Math.floor(totalSeconds) : 0;
   const h = Math.floor(safe / 3600);
@@ -8,7 +7,6 @@ export function formatTime(totalSeconds: number): string {
   return h > 0 ? `${h}:${String(m).padStart(2, '0')}:${ss}` : `${m}:${ss}`;
 }
 
-/** Обратное преобразование: «1:22» → 82. Возвращает null, если формат неверный. */
 export function parseTime(input: string): number | null {
   const match = /^(?:(\d{1,2}):)?(\d{1,3}):([0-5]\d)$/.exec(input.trim());
   if (!match) return null;
@@ -36,7 +34,6 @@ export function formatDate(iso: string): string {
 
 const PLURALS = new Intl.PluralRules('ru-RU');
 
-/** pluralize(2, ['версия', 'версии', 'версий']) → «2 версии» */
 export function pluralize(count: number, forms: readonly [string, string, string]): string {
   const rule = PLURALS.select(count);
   const form = rule === 'one' ? forms[0] : rule === 'few' ? forms[1] : forms[2];

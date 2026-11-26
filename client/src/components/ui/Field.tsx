@@ -13,7 +13,6 @@ interface ShellProps extends FieldChrome {
   children: ReactNode;
 }
 
-/** Подпись + подсказка + ошибка вокруг поля ввода. Связь через id нужна скринридерам. */
 function Shell({ id, label, error, hint, children }: ShellProps) {
   return (
     <div className={styles.field}>

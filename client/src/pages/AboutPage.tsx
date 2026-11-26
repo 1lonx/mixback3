@@ -33,7 +33,6 @@ function DemoControls() {
   const reset = () => {
     resetDemoData(storage);
     setConfirmReset(false);
-    // Сессия хранилась вместе с данными: после сброса приложение узнает, что пользователь вышел.
     void dispatch(restoreSession());
     dispatch(pushToast('success', 'Демо-данные восстановлены'));
   };

@@ -10,7 +10,6 @@
 }
 
 .log {
-  /* Плавное затухание сверху: прокрученное сообщение не выглядит обрезанным */
   mask-image: linear-gradient(to bottom, transparent 0, #000 18px);
   max-height: 360px;
   padding: 4px;

@@ -9,7 +9,6 @@ interface UserMenuProps {
   onLogout: () => void;
 }
 
-/** Выпадающее меню аккаунта: кнопка-раскрытие, а не role="menu", — внутри обычные ссылки. */
 export function UserMenu({ user, onLogout }: UserMenuProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -34,7 +33,6 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
     };
   }, [open]);
 
-  // Фокус ушёл за пределы меню (Tab) — закрываем, чтобы панель не висела над страницей.
   const handleBlur = (event: FocusEvent) => {
     const next = event.relatedTarget;
     if (next instanceof Node && !rootRef.current?.contains(next)) setOpen(false);

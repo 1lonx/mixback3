@@ -2,15 +2,12 @@ import { pluralize } from '../../lib/format';
 import styles from './Stars.module.css';
 
 interface StarsProps {
-  /** Средняя оценка; null — отзывов ещё нет. */
   value: number | null;
-  /** Число отзывов за средней оценкой. Не указано — это одна оценка (под самим отзывом). */
   count?: number;
 }
 
 const formatRating = (value: number) => value.toFixed(1).replace('.', ',');
 
-/** Компактный рейтинг «★ 4,8 (12)». Для скринридера — одна фраза, без разбора по символам. */
 export function Stars({ value, count }: StarsProps) {
   if (value === null) return <span className={styles.none}>Пока нет отзывов</span>;
   const label =

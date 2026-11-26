@@ -5,7 +5,6 @@ import { loginAsDemo, makeWav, openUserMenu, waitForPlayerReady } from './helper
 const theme = (page: Page) => page.locator('html').getAttribute('data-theme');
 
 test.describe('темы оформления', () => {
-  // Playwright по умолчанию эмулирует светлую системную тему — для этого теста нужна тёмная.
   test.use({ colorScheme: 'dark' });
 
   test('выбор темы запоминается и применяется до отрисовки после перезагрузки', async ({
@@ -19,7 +18,6 @@ test.describe('темы оформления', () => {
     await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(244, 244, 246)');
 
     await page.reload();
-    // Тема ставится синхронным скриптом в <head>, поэтому верна уже в момент загрузки страницы.
     await expect.poll(() => theme(page)).toBe('light');
   });
 
@@ -118,7 +116,6 @@ test.describe('безопасность', () => {
     expect(csp).toContain("script-src 'self'");
     expect(csp).toContain("object-src 'none'");
     expect(csp).not.toContain("'unsafe-eval'");
-    // Скрипты — только свои, без inline: иначе XSS через разметку выполнил бы код.
     expect(csp).not.toMatch(/script-src[^;]*'unsafe-inline'/);
   });
 

@@ -34,7 +34,6 @@ export function EngineerPage() {
   const error = useAppSelector(selectEngineerError);
   const rootRef = useRef<HTMLDivElement>(null);
 
-  /** Новый ключ при каждом открытии: форма заказа начинает с чистого листа. */
   const dialogCount = useRef(0);
   const [dialog, setDialog] = useState<{ key: number; serviceId: string | null } | null>(null);
 
@@ -70,7 +69,6 @@ export function EngineerPage() {
 
   const order = (serviceId: string | null) => {
     if (!user) {
-      // После входа вернёмся на эту же страницу.
       void navigate('/login', {
         state: { from: { pathname: location.pathname, search: location.search } },
       });

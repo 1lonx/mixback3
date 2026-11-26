@@ -22,7 +22,6 @@ async function expectNoHorizontalScroll(page: Page) {
   expect(overflow, 'горизонтальная прокрутка').toBeLessThanOrEqual(0);
 }
 
-/** Вход по e-mail и паролю — для звукорежиссёров из каталога, у которых нет кнопки быстрого входа. */
 async function loginWith(page: Page, email: string) {
   await page.goto('/login');
   await page.getByLabel('E-mail').fill(email);
@@ -106,7 +105,6 @@ test.describe('маркетплейс: сценарии', () => {
   });
 
   test('весь путь заказа: заказ → принятие → версия → сдача → правки → отзыв', async ({ page }) => {
-    // 1. Заказчица (Лера) выбирает Данила и оформляет заказ — гостем начинать нельзя, уходим на вход и возвращаемся
     await page.goto('/engineers/u_danil');
     await page.getByRole('button', { name: 'Заказать: Сведение бита с вокалом' }).click();
     await page.getByRole('button', { name: 'Войти как артист' }).click();
@@ -127,7 +125,6 @@ test.describe('маркетплейс: сценарии', () => {
     const orderUrl = page.url();
     await logoutInApp(page);
 
-    // 2. Данил видит заказ и принимает его — появляется проект
     await loginWith(page, 'danil@mixback.app');
     await page.goto(orderUrl);
     await expect(page.getByText('Заказчик: Лера').or(page.getByText('Лера'))).toBeVisible();
@@ -135,7 +132,6 @@ test.describe('маркетплейс: сценарии', () => {
     await page.getByRole('link', { name: 'Открыть проект' }).click();
     await expect(page.getByText('Версий пока нет')).toBeVisible();
 
-    // 3. Загружает версию и сдаёт работу
     await page.getByLabel('Аудиофайл').setInputFiles(makeWav());
     await page.getByRole('button', { name: 'Загрузить версию' }).click();
     await expect(page.getByText('Версия v1 загружена')).toBeVisible();
@@ -145,7 +141,6 @@ test.describe('маркетплейс: сценарии', () => {
     await expect(page.getByText(/Ждём решения заказчика/)).toBeVisible();
     await logoutInApp(page);
 
-    // 4. Лера слушает, оставляет правку на волне, возвращает на доработку
     await loginAsDemo(page, 'artist');
     await page.goto(orderUrl);
     await page.getByRole('button', { name: 'Нужны правки' }).click();
@@ -159,7 +154,6 @@ test.describe('маркетплейс: сценарии', () => {
     await expect(page.getByRole('region', { name: 'Правки' })).toContainText('Вокал тише, чем бит');
     await logoutInApp(page);
 
-    // 5. Данил сдаёт повторно, Лера принимает работу и оставляет отзыв
     await loginWith(page, 'danil@mixback.app');
     await page.goto(orderUrl);
     await page.getByRole('button', { name: 'Сдать работу' }).click();
@@ -178,7 +172,6 @@ test.describe('маркетплейс: сценарии', () => {
     await page.getByRole('button', { name: 'Оставить отзыв' }).click();
     await expect(page.getByText('Бит качает, спасибо!')).toBeVisible();
 
-    // 6. Отзыв виден в профиле, рейтинг пересчитан
     await page.goto('/engineers/u_danil');
     await expect(page.getByText('Бит качает, спасибо!')).toBeVisible();
     await expect(
@@ -206,7 +199,6 @@ test.describe('маркетплейс: сценарии', () => {
     await page.getByRole('button', { name: 'Сохранить анкету' }).click();
     await expect(page.getByText('Анкета сохранена и видна в каталоге')).toBeVisible();
 
-    // Портфолио: настоящий WAV проходит проверку сигнатуры и анализ громкости
     await page.getByLabel('Аудиофайл').setInputFiles(makeWav());
     await page.getByLabel('Название работы').fill('Тестовый микс');
     await page.getByRole('button', { name: 'Добавить работу' }).click();
@@ -250,7 +242,6 @@ test.describe('обложка анкеты и счётчик', () => {
     await loginWith(page, 'ilya@mixback.app');
     await page.goto('/profile/engineer');
 
-    // Большой PNG рисуем в самом браузере: так проверяется настоящее сжатие через canvas.
     const bytes = await page.evaluate(async () => {
       const canvas = document.createElement('canvas');
       canvas.width = 3000;

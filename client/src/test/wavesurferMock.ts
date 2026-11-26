@@ -1,9 +1,5 @@
 type Listener = (...args: never[]) => void;
 
-/**
- * Лёгкая замена wavesurfer.js для jsdom: в нём нет canvas и аудио.
- * Хранит список созданных экземпляров, чтобы тесты могли «нажимать» события плеера.
- */
 export default class MockWaveSurfer {
   static instances: MockWaveSurfer[] = [];
 

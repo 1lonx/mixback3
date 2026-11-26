@@ -2,7 +2,6 @@ import { cx } from '../../lib/cx';
 import { passwordStrength } from '../../lib/passwordStrength';
 import styles from './StrengthMeter.module.css';
 
-/** Индикатор надёжности пароля: цвет + текст (цвет один не должен быть единственным признаком). */
 export function StrengthMeter({ password }: { password: string }) {
   const { score, label } = passwordStrength(password);
   if (!password) return null;

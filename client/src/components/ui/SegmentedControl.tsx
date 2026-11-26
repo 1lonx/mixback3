@@ -14,7 +14,6 @@ interface SegmentedControlProps<T extends string> {
   onChange: (value: T) => void;
 }
 
-/** Переключатель на радиокнопках: клавиатура (стрелки) и скринридер работают из коробки. */
 export function SegmentedControl<T extends string>({
   label,
   options,

@@ -26,7 +26,6 @@ const PHASE_LABEL: Record<Phase, string> = {
   saving: 'Сохраняем…',
 };
 
-/** Загрузка нового микса: файл разбирается прямо в браузере (волна, LUFS, пик), затем сохраняется как версия. */
 export function UploadVersion({ projectId, onUploaded }: UploadVersionProps) {
   const dispatch = useAppDispatch();
   const fileInput = useRef<HTMLInputElement>(null);
@@ -49,7 +48,6 @@ export function UploadVersion({ projectId, onUploaded }: UploadVersionProps) {
       return;
     }
 
-    // Расширение и MIME-тип подделываются переименованием — смотрим на настоящую сигнатуру файла.
     if (!(await fileLooksLikeAudio(file))) {
       setFileError(
         'Содержимое файла не похоже на аудио. Проверьте, что это настоящий mp3, wav, ogg, flac или m4a.',

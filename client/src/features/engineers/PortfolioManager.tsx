@@ -28,7 +28,6 @@ const PHASE_LABEL: Record<Phase, string> = {
   saving: 'Сохраняем…',
 };
 
-/** Работы портфолио: загрузка проходит тот же путь, что и версии, — проверка сигнатуры, разбор волны и громкости. */
 export function PortfolioManager({ tracks }: { tracks: readonly PortfolioTrack[] }) {
   const dispatch = useAppDispatch();
   const fileInput = useRef<HTMLInputElement>(null);
@@ -54,7 +53,6 @@ export function PortfolioManager({ tracks }: { tracks: readonly PortfolioTrack[]
       setErrors(next);
       return;
     }
-    // Расширение и MIME-тип подделываются переименованием — смотрим на настоящую сигнатуру файла.
     if (!(await fileLooksLikeAudio(file))) {
       setErrors({
         file: 'Содержимое файла не похоже на аудио. Проверьте, что это настоящий mp3, wav, ogg, flac или m4a.',

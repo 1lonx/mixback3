@@ -1,5 +1,3 @@
-// GitHub Pages не знает про клиентские маршруты: на /projects/1 отдаст 404.
-// Копия index.html как 404.html заставляет Pages отдавать SPA на любой путь.
 import { copyFileSync, existsSync } from 'node:fs';
 
 if (!existsSync('dist/index.html')) {

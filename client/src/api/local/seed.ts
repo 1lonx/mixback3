@@ -4,7 +4,6 @@ import { DEMO_ARTIST, DEMO_ENGINEERS, DEMO_OWNER, DEMO_PASSWORD } from '../../li
 import { hashPassword } from './password';
 import { createMarketSeed } from './seedMarket';
 
-/** Демо-трек (CC0) лежит в public/demo; путь указан относительно BASE_URL. */
 const DEMO_TRACK = 'demo/track.mp3';
 const DEMO_DURATION = 273;
 
@@ -19,15 +18,10 @@ async function makeUser(
   return { ...base, salt, passwordHash: await hashPassword(password, salt), createdAt };
 }
 
-/** У звукорежиссёров из каталога общая соль: PBKDF2 считается один раз на процесс, а не на каждого. */
 const SHARED_SALT = 'seed-engineers';
 let sharedHash: Promise<string> | null = null;
 const engineerHash = () => (sharedHash ??= hashPassword(DEMO_PASSWORD, SHARED_SALT));
 
-/**
- * Демо-данные, которые видит новый посетитель.
- * Идентификаторы фиксированы, чтобы на них можно было ссылаться в E2E-тестах.
- */
 export async function createSeedDb(now: Date): Promise<Db> {
   const at = (daysAgo: number) => new Date(now.getTime() - daysAgo * DAY).toISOString();
 

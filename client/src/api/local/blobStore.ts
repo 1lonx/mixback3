@@ -1,4 +1,3 @@
-/** Хранилище аудиофайлов. localStorage для них мал (≈5 МБ), поэтому — IndexedDB. */
 export interface BlobStore {
   put(id: string, blob: Blob): Promise<void>;
   get(id: string): Promise<Blob | null>;

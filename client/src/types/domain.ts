@@ -1,8 +1,3 @@
-/**
- * Доменные типы Mixback. Повторяют сущности из контракта этапа 1
- * (User, Project, ProjectMember, Version, Comment), чтобы на этапе 4
- * моки заменялись реальным API без переписывания интерфейса.
- */
 export type Role = 'owner' | 'artist';
 
 export type ProjectStatus = 'active' | 'approved' | 'archived';
@@ -24,7 +19,6 @@ export interface Project {
   updatedAt: string;
 }
 
-/** Проект в списке: добавлены агрегаты и роль текущего пользователя. */
 export interface ProjectSummary extends Project {
   role: Role;
   versionsCount: number;
@@ -43,14 +37,10 @@ export interface Version {
   projectId: string;
   number: number;
   note: string;
-  /** http(s)-адрес демо-трека либо `idb:<id>` для загруженного файла. */
   fileUrl: string;
   durationSec: number;
-  /** Нормализованные пики 0..1 для отрисовки волны; null — волну построит плеер. */
   peaks: number[] | null;
-  /** Интегральная громкость по BS.1770, LUFS. */
   lufs: number;
-  /** Пик по выборкам, dBFS. (True peak требует передискретизации — появится с ffmpeg на бэкенде.) */
   peakDb: number;
   createdAt: string;
 }
@@ -79,7 +69,6 @@ export interface ChecklistItem {
   id: string;
   category: ChecklistCategory;
   text: string;
-  /** Комментарии, из которых получен пункт. */
   commentIds: string[];
   timeSec: number;
   done: boolean;
@@ -119,8 +108,6 @@ export interface Profile {
   session: { createdAt: string; expiresAt: string };
 }
 
-// ───────── Маркетплейс: звукорежиссёры, заказы, отзывы ─────────
-
 export type ServiceKind = 'mixing' | 'mastering' | 'vocal' | 'editing';
 
 export const SERVICE_KINDS: readonly ServiceKind[] = ['mixing', 'mastering', 'vocal', 'editing'];
@@ -137,7 +124,6 @@ export const GENRES = [
 ] as const;
 export type Genre = (typeof GENRES)[number];
 
-/** Услуга звукорежиссёра с фиксированной ценой — как «кворк» на фриланс-бирже. */
 export interface Service {
   id: string;
   kind: ServiceKind;
@@ -147,7 +133,6 @@ export interface Service {
   days: number;
 }
 
-/** Работа в портфолио. Поля `id` и `fileUrl` совпадают с Version — аудио грузится тем же способом. */
 export interface PortfolioTrack {
   id: string;
   engineerId: string;
@@ -166,9 +151,7 @@ export interface EngineerProfile {
   bio: string;
   genres: Genre[];
   services: Service[];
-  /** Скрытый профиль не виден в каталоге: так звукарь готовит анкету до публикации. */
   published: boolean;
-  /** Обложка анкеты: уменьшенная картинка data:-URL; null — не загружена. */
   coverUrl?: string | null;
   updatedAt: string;
 }
@@ -184,7 +167,6 @@ export interface Review {
   createdAt: string;
 }
 
-/** Карточка в каталоге. */
 export interface EngineerSummary {
   userId: string;
   name: string;
@@ -192,7 +174,6 @@ export interface EngineerSummary {
   genres: Genre[];
   kinds: ServiceKind[];
   minPrice: number | null;
-  /** Средняя оценка; null, пока нет ни одного отзыва. */
   rating: number | null;
   reviewsCount: number;
   completedOrders: number;
@@ -205,7 +186,6 @@ export interface EngineerDetail extends EngineerSummary {
   portfolio: PortfolioTrack[];
   reviews: Review[];
   published: boolean;
-  /** Это профиль текущего пользователя: заказать у самого себя нельзя. */
   isMe: boolean;
 }
 
@@ -220,7 +200,6 @@ export interface EngineersQuery {
   q: string;
   kind: ServiceKind | 'all';
   genre: Genre | 'all';
-  /** Верхняя граница цены минимальной услуги; null — без ограничения. */
   maxPrice: number | null;
   sort: EngineerSort;
 }
@@ -237,14 +216,12 @@ export interface Order {
   engineerId: string;
   clientId: string;
   serviceId: string;
-  /** Название, цена и срок копируются в заказ: правка услуги не меняет уже оформленный заказ. */
   serviceTitle: string;
   serviceKind: ServiceKind;
   priceRub: number;
   days: number;
   brief: string;
   status: OrderStatus;
-  /** Проект с версиями и правками появляется, когда звукарь принимает заказ. */
   projectId: string | null;
   reviewed: boolean;
   createdAt: string;
@@ -254,7 +231,6 @@ export interface Order {
 export interface OrderView extends Order {
   engineerName: string;
   clientName: string;
-  /** Кем текущий пользователь выступает в этом заказе. */
   side: OrderSide;
 }
 
@@ -267,7 +243,6 @@ export interface OrdersQuery {
   status: OrderStatus | 'all';
 }
 
-/** Сообщение в переписке по заказу. */
 export interface Message {
   id: string;
   orderId: string;

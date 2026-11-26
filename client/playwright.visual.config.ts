@@ -1,10 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-/**
- * Визуальные тесты: каждая story из Storybook сравнивается с эталонным скриншотом.
- * Эталоны лежат в visual/stories.spec.ts-snapshots и зависят от ОС/браузера (Playwright
- * добавляет суффикс платформы), поэтому обновлять их нужно там же, где они проверяются.
- */
 export default defineConfig({
   testDir: './visual',
   fullyParallel: true,

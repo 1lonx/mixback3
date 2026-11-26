@@ -11,7 +11,6 @@ interface TransportProps {
   currentTime: number;
   duration: number;
   version: Version;
-  /** Эталонная громкость проекта, к которой подтянуты версии при выравнивании; null — нечего сравнивать. */
   matchTarget: number | null;
   matchEnabled: boolean;
   onMatchChange: (enabled: boolean) => void;

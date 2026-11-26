@@ -8,7 +8,6 @@ const analyzeAudioFile = vi.hoisted(() => vi.fn());
 vi.mock('../../lib/audio/analyze', () => ({ analyzeAudioFile }));
 
 const analysis = { durationSec: 180, peaks: [0.2, 1, 0.4], lufs: -9.2, peakDb: -0.2 };
-// Начало настоящего WAV-файла: UploadVersion проверяет сигнатуру, а не только расширение.
 const WAV_HEADER = 'RIFF\u0000\u0000\u0000\u0000WAVEfmt fake-audio';
 const audio = (name = 'final-mix.wav') => new File([WAV_HEADER], name, { type: 'audio/wav' });
 
@@ -55,7 +54,6 @@ describe('UploadVersion', () => {
     expect(await screen.findByRole('radio', { name: 'v2' })).toBeChecked();
     expect(screen.getByText('−9.2 LUFS')).toBeInTheDocument();
     expect(screen.getByText(/Вокал громче/)).toBeInTheDocument();
-    // форма очистилась
     expect(screen.getByLabelText('Что изменилось')).toHaveValue('');
   });
 

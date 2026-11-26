@@ -105,7 +105,7 @@ describe('безопасность и аккаунт (мок-сервер)', () 
       );
       expect(one?.passwordHash).toMatch(/^[0-9a-f]{64}$/);
       expect(one?.salt).not.toBe(two?.salt);
-      expect(one?.passwordHash).not.toBe(two?.passwordHash); // одинаковые пароли → разные хеши
+      expect(one?.passwordHash).not.toBe(two?.passwordHash);
       expect(ctx.storage.getItem(DB_KEY)).not.toContain('same-pass1');
     });
   });
@@ -179,7 +179,7 @@ describe('безопасность и аккаунт (мок-сервер)', () 
         projectsOwned: 3,
         projectsShared: 0,
         versions: 6,
-        comments: 2, // правки Алекса в seed
+        comments: 2,
         resolved: 1,
       });
       expect(

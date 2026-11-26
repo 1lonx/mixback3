@@ -24,11 +24,9 @@ const preview: Preview = {
   },
   decorators: [
     (Story, context) => {
-      // Цвета берутся из CSS-переменных, поэтому достаточно выставить атрибут, как это делает приложение.
       document.documentElement.setAttribute('data-theme', String(context.globals.theme));
       return (
         <>
-          {/* Анимации отключены, иначе скриншоты получаются «плавающими». */}
           <style>{`*,*::before,*::after{animation:none !important;transition:none !important;caret-color:transparent !important}body{background:var(--bg) !important}`}</style>
           <div style={{ padding: 24, minWidth: 320, background: 'var(--bg)' }}>
             <Story />

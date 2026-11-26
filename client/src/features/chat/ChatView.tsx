@@ -10,13 +10,9 @@ import styles from './ChatView.module.css';
 interface ChatViewProps {
   messages: readonly Message[];
   currentUserId: string;
-  /** Идёт первая загрузка переписки. */
   loading?: boolean;
-  /** Текст ошибки загрузки; показывается, пока нечего показать. */
   loadError?: string | null;
-  /** Переписка закрыта: читать можно, писать нельзя. */
   readOnly?: boolean;
-  /** Отправка; промис отклоняется, если сообщение не ушло, — тогда текст остаётся в поле. */
   onSend: (text: string) => Promise<void>;
   onRetry?: () => void;
 }
@@ -28,7 +24,6 @@ const formatTime = (iso: string) => {
     : new Intl.DateTimeFormat('ru-RU', { hour: '2-digit', minute: '2-digit' }).format(date);
 };
 
-/** Чат без знания о Redux и API — так его удобно проверять в Storybook и тестах. */
 export function ChatView({
   messages,
   currentUserId,
@@ -43,7 +38,6 @@ export function ChatView({
   const [sending, setSending] = useState(false);
   const logRef = useRef<HTMLDivElement>(null);
 
-  // Новое сообщение — прокручиваем к нему, как в любом мессенджере.
   useEffect(() => {
     const log = logRef.current;
     if (log) log.scrollTop = log.scrollHeight;
@@ -63,13 +57,12 @@ export function ChatView({
       await onSend(parsed.data.text);
       setText('');
     } catch {
-      // Ошибку показывает вызывающий код (тост); текст остаётся, чтобы его не набирать заново.
+      return;
     } finally {
       setSending(false);
     }
   };
 
-  // Enter отправляет, Shift+Enter — новая строка.
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
       event.preventDefault();

@@ -18,7 +18,6 @@ import type { ProjectInput } from '../lib/schemas';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import styles from './ProjectFormPage.module.css';
 
-/** Одна страница для создания (/projects/new) и редактирования (/projects/:id/edit). */
 export function ProjectFormPage() {
   const { projectId } = useParams();
   const editing = projectId !== undefined;

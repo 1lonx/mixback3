@@ -74,8 +74,6 @@ const commentsSlice = createSlice({
       .addCase(removeComment.fulfilled, (state, { payload }) => {
         adapter.removeOne(state, payload);
       })
-      // Оптимистичное обновление: галочка «решено» срабатывает мгновенно,
-      // а при ошибке сервера возвращается обратно.
       .addCase(updateComment.pending, (state, { meta }) => {
         const { id, patch } = meta.arg;
         if (patch.resolved !== undefined)
@@ -103,7 +101,6 @@ export type CommentFilter = 'all' | 'open' | 'resolved';
 export const selectCommentsStatus = (state: RootState) => state.comments.status;
 export const selectCommentsError = (state: RootState) => state.comments.error;
 
-/** Комментарии, отфильтрованные по статусу. Мемоизирован: пересчёт только при смене списка или фильтра. */
 export const selectFilteredComments = createSelector(
   [selectAllComments, (_: RootState, filter: CommentFilter) => filter],
   (comments, filter) =>

@@ -18,14 +18,9 @@ interface VersionWorkspaceProps {
   versions: readonly Version[];
   role: Role;
   userId: string;
-  /** Дополнительные блоки боковой колонки (участники, загрузка версии). */
   aside?: ReactNode;
 }
 
-/**
- * Рабочая область одной версии. Владеет плеером и раздаёт его управление
- * списку правок и чек-листу: клик по таймкоду в любом из них перематывает волну.
- */
 export function VersionWorkspace({
   version,
   versions,
@@ -41,7 +36,6 @@ export function VersionWorkspace({
     void dispatch(fetchComments(version.id));
   }, [dispatch, version.id]);
 
-  // Выравнивание имеет смысл, только когда есть что сравнивать.
   const matchTarget = versions.length > 1 ? referenceLufs(versions.map((v) => v.lufs)) : null;
   const volume = matchEnabled ? matchGain(version.lufs, matchTarget) : 1;
 
@@ -81,7 +75,6 @@ export function VersionWorkspace({
 
         <Card aria-labelledby="composer-title" className={styles.block}>
           <h2 id="composer-title">Новая правка</h2>
-          {/* key: форма и список начинают с чистого листа для каждой версии, плеер — нет. */}
           <CommentComposer
             key={version.id}
             versionId={version.id}

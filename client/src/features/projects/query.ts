@@ -5,7 +5,6 @@ export const DEFAULT_QUERY: ProjectsQuery = { q: '', status: 'all', sort: 'updat
 const STATUSES: readonly ProjectStatus[] = ['active', 'approved', 'archived'];
 const SORTS: readonly SortKey[] = ['updated', 'title', 'comments'];
 
-/** Читает фильтры из адресной строки. Мусорные значения молча заменяются значениями по умолчанию. */
 export function parseProjectsQuery(params: URLSearchParams): ProjectsQuery {
   const status = params.get('status');
   const sort = params.get('sort');
@@ -16,7 +15,6 @@ export function parseProjectsQuery(params: URLSearchParams): ProjectsQuery {
   };
 }
 
-/** Обратное преобразование. Значения по умолчанию не пишем — адрес остаётся коротким. */
 export function toSearchParams(query: ProjectsQuery): URLSearchParams {
   const params = new URLSearchParams();
   if (query.q.trim()) params.set('q', query.q.trim());

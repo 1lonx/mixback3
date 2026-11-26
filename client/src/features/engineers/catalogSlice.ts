@@ -9,7 +9,6 @@ export const fetchEngineers = apiThunk('catalog/fetch', (query: EngineersQuery, 
   api.engineers.list(query),
 );
 
-// `void` — идиома RTK: thunk без аргумента.
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
 export const fetchPublishedCount = apiThunk('catalog/count', (_: void, { api }) =>
   api.engineers.count(),
@@ -21,9 +20,7 @@ const adapter = createEntityAdapter<EngineerSummary, string>({ selectId: (e) => 
 export interface CatalogState {
   status: LoadStatus;
   error: SerializedError | null;
-  /** Ответ на устаревший запрос (быстрый ввод в поиск) отбрасывается. */
   currentRequestId: string | null;
-  /** Всего опубликованных анкет, без учёта фильтров; null — ещё не знаем. */
   publishedCount: number | null;
 }
 

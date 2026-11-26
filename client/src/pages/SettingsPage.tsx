@@ -16,7 +16,6 @@ import { useReveal } from '../lib/motion';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import styles from './ProfilePage.module.css';
 
-/** Настройки аккаунта: имя, пароль, оформление, сессия и удаление. Данные профиля — на странице профиля. */
 export function SettingsPage() {
   useDocumentTitle('Настройки');
   const dispatch = useAppDispatch();

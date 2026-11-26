@@ -16,12 +16,10 @@ import styles from './OrderDialog.module.css';
 interface OrderDialogProps {
   engineer: EngineerDetail;
   open: boolean;
-  /** Услуга, выбранная кнопкой «Заказать» в списке. */
   initialServiceId: string | null;
   onClose: () => void;
 }
 
-/** Оформление заказа: услуга + описание задачи. Цена и срок берутся из услуги и копируются в заказ. */
 export function OrderDialog({ engineer, open, initialServiceId, onClose }: OrderDialogProps) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

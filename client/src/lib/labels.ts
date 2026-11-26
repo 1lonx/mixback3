@@ -49,6 +49,5 @@ export const ORDER_SIDE_LABELS: Record<OrderSide, string> = {
   engineer: 'Мне заказывают',
 };
 
-/** Цена с пробелом-разделителем тысяч: 12 500 ₽. */
 export const formatPrice = (rub: number): string =>
   `${new Intl.NumberFormat('ru-RU').format(rub).replace(/\s/g, '\u00a0')}\u00a0₽`;

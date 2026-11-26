@@ -11,7 +11,6 @@ import { pushToast } from '../toasts/toastsSlice';
 import styles from './CoverUploader.module.css';
 import { setCover } from './mineSlice';
 
-/** Обложка анкеты: её видят в каталоге и на странице звукорежиссёра. */
 export function CoverUploader({ coverUrl }: { coverUrl: string | null }) {
   const dispatch = useAppDispatch();
   const input = useRef<HTMLInputElement>(null);

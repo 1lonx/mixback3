@@ -19,7 +19,6 @@ export function LoginPage() {
 
   if (user) {
     const from = (location.state as LocationState | null)?.from;
-    // from приходит из состояния роутера, но всё равно пропускаем только внутренние пути (защита от open redirect)
     return (
       <Navigate to={safeInternalPath(from && `${from.pathname}${from.search ?? ''}`)} replace />
     );

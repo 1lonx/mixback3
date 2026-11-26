@@ -41,7 +41,6 @@ const messagesSlice = createSlice({
       .addCase(fetchMessages.pending, (state, action) => {
         state.currentRequestId = action.meta.requestId;
         state.error = null;
-        // Другой заказ — чужую переписку не показываем; опрос того же заказа не мигает «загрузкой».
         if (state.orderId !== action.meta.arg) {
           state.orderId = action.meta.arg;
           state.items = [];
@@ -55,7 +54,6 @@ const messagesSlice = createSlice({
       })
       .addCase(fetchMessages.rejected, (state, action) => {
         if (state.currentRequestId !== action.meta.requestId) return;
-        // Сбой фоновой подгрузки не стирает уже показанную переписку.
         state.status = state.items.length > 0 ? 'succeeded' : 'failed';
         state.error = errorFrom(action);
       })

@@ -48,7 +48,6 @@ describe('measureLoudness (ITU-R BS.1770-4)', () => {
     const withSilence = new Float32Array(tone.length + silence.length);
     withSilence.set(tone, 0);
     withSilence.set(silence, tone.length);
-    // Без гейтинга половина тишины дала бы −26 LUFS; блоки на стыке допускают небольшой сдвиг.
     const diff = measureLoudness([withSilence], SAMPLE_RATE) - measureLoudness([tone], SAMPLE_RATE);
     expect(Math.abs(diff)).toBeLessThan(0.25);
   });

@@ -4,10 +4,6 @@ import type { RefObject } from 'react';
 
 gsap.registerPlugin(useGSAP);
 
-/**
- * Анимации отключаются, если пользователь просит «уменьшить движение»
- * (и там, где нет matchMedia — например, в тестах jsdom). Интерфейс при этом полностью рабочий.
- */
 export function prefersReducedMotion(): boolean {
   return (
     typeof window.matchMedia !== 'function' ||
@@ -15,10 +11,6 @@ export function prefersReducedMotion(): boolean {
   );
 }
 
-/**
- * Плавное появление дочерних элементов по очереди.
- * `scope` ограничивает селектор текущим компонентом, очистка выполняется автоматически.
- */
 export function useReveal(
   scope: RefObject<HTMLElement | null>,
   selector: string,

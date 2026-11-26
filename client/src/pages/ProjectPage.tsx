@@ -70,7 +70,6 @@ export function ProjectPage() {
   const { project, role, members, versions } = current;
   const isOwner = role === 'owner';
 
-  // Версия выбирается через адрес (?v=2): такой экран можно отправить ссылкой.
   const latest = versions[versions.length - 1];
   const requested = Number(searchParams.get('v'));
   const version = versions.find((v) => v.number === requested) ?? latest;
@@ -142,7 +141,6 @@ export function ProjectPage() {
               {version.note} · {formatDate(version.createdAt)}
             </p>
           </div>
-          {/* Без key: плеер живёт между версиями, чтобы A/B продолжал играть с того же места. */}
           <VersionWorkspace
             version={version}
             versions={versions}

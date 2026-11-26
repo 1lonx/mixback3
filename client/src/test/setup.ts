@@ -3,7 +3,6 @@ import { cleanup, configure } from '@testing-library/react';
 import { afterEach, vi } from 'vitest';
 import MockWaveSurfer from './wavesurferMock';
 
-// PBKDF2 в мок-API намеренно тяжёлый, поэтому при параллельном запуске даём больше времени.
 configure({ asyncUtilTimeout: 5000 });
 
 vi.mock('wavesurfer.js', () => ({ default: MockWaveSurfer }));
@@ -13,7 +12,6 @@ if (
   typeof HTMLDialogElement !== 'undefined' &&
   typeof HTMLDialogElement.prototype.showModal !== 'function'
 ) {
-  // jsdom не реализует <dialog>.showModal()/close(): повторяем поведение, которое нужно компонентам.
   HTMLDialogElement.prototype.showModal = function showModal(this: HTMLDialogElement) {
     this.setAttribute('open', '');
   };

@@ -69,7 +69,6 @@ export interface LocalApiOptions {
   storage: KeyValueStore;
   blobs: BlobStore;
   controls: MockControls;
-  /** Префикс для относительных адресов демо-трека (Vite BASE_URL). */
   assetBase?: string;
   now?: () => Date;
   newId?: (prefix: string) => string;
@@ -82,10 +81,8 @@ const defaultSleep = (ms: number) =>
 const toPublicUser = ({ id, email, name }: StoredUser): User => ({ id, email, name });
 const normalizeEmail = (email: string) => email.trim().toLowerCase();
 
-/** Заказ в этих статусах ещё «живой»: повторно заказать ту же услугу нельзя. */
 const OPEN_ORDER: readonly OrderStatus[] = ['pending', 'in_progress', 'delivered'];
 
-/** Кто и из какого статуса может сделать переход. Единственное место, где описан жизненный цикл заказа. */
 const TRANSITIONS: Record<
   OrderAction,
   { by: OrderSide; from: readonly OrderStatus[]; to: OrderStatus }
@@ -100,12 +97,6 @@ const TRANSITIONS: Record<
 
 const round1 = (value: number) => Math.round(value * 10) / 10;
 
-/**
- * Мок серверной части: данные в localStorage (метаданные) и IndexedDB (аудио).
- * Ведёт себя как настоящий API: проверяет права, валидирует вход, возвращает
- * HTTP-подобные ошибки и работает асинхронно с задержкой.
- */
-/** Картинку храним в базе строкой: на этапе 4 её заменит загрузка на сервер. */
 function readAsDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -126,8 +117,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
   async function readDb(): Promise<Db> {
     const existing = loadDb(storage);
     if (existing) return existing;
-    // Первый запуск или повреждённые данные: создаём демо-данные.
-    // Промис общий, чтобы параллельные запросы не засеяли базу дважды.
     seeding ??= createSeedDb(now())
       .then((seed) => {
         saveDb(storage, seed);
@@ -147,15 +136,12 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
     }
   }
 
-  /** Имитация сети: задержка и (по настройке) отказ. */
   async function network(slowFactor = 1): Promise<void> {
     const { latencyMs, failNetwork } = controls.get();
     await sleep(latencyMs * slowFactor);
     if (failNetwork) throw networkError();
   }
 
-  // Обработчики выполняются строго по очереди: иначе два параллельных запроса
-  // прочитают одну и ту же базу, и второй записью затрёт изменения первого.
   let queue: Promise<unknown> = Promise.resolve();
 
   async function request<T>(handler: (db: Db) => T | Promise<T>, slowFactor = 1): Promise<T> {
@@ -173,7 +159,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
     return result.data;
   }
 
-  /** Действующая сессия. Просроченная сразу удаляется: токен не живёт вечно. */
   function activeSession(db: Db) {
     const session = db.session;
     if (!session) return null;
@@ -192,7 +177,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
     return user;
   }
 
-  /** Лимит неудачных попыток входа и пароля: защита от подбора. */
   function assertNotLocked(db: Db, key: string): void {
     const lockedUntil = db.loginAttempts[key]?.lockedUntil;
     if (!lockedUntil) return;
@@ -223,7 +207,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
     );
   }
 
-  /** Проверка пароля с учётом лимита попыток. Одинаковая ошибка для любого провала. */
   async function checkPassword(db: Db, user: StoredUser, password: string, message: string) {
     assertNotLocked(db, user.email);
     if (!(await verifyPassword(password, user.salt, user.passwordHash))) {
@@ -233,7 +216,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
     clearFailures(db, user.email);
   }
 
-  /** Удаляет проект со всеми зависимыми данными, возвращает версии (для чистки файлов). */
   function cascadeDeleteProject(db: Db, projectId: string): Version[] {
     const versions = db.versions.filter((v) => v.projectId === projectId);
     const versionIds = new Set(versions.map((v) => v.id));
@@ -250,7 +232,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
       versions.filter((v) => v.fileUrl.startsWith('idb:')).map((v) => blobs.delete(v.id)),
     );
 
-  /** Роль пользователя в проекте. Для не-участников — 404, чтобы не раскрывать существование. */
   function roleIn(db: Db, projectId: string, userId: string): Role {
     const role = db.members.find((m) => m.projectId === projectId && m.userId === userId)?.role;
     if (!role || !db.projects.some((p) => p.id === projectId)) throw notFound('Проект');
@@ -278,9 +259,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
 
   const touch = (project: Project): Project => ({ ...project, updatedAt: now().toISOString() });
 
-  // ───────── Маркетплейс ─────────
-
-  /** Каталог открыт гостям, поэтому «кто смотрит» — это необязательный вопрос. */
   const viewerId = (db: Db): string | null => activeSession(db)?.userId ?? null;
   const nameOf = (db: Db, userId: string) => db.users.find((u) => u.id === userId)?.name ?? '—';
 
@@ -308,14 +286,12 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
 
   const orderView = (db: Db, order: Order, userId: string): OrderView => ({
     ...order,
-    // Проект могли удалить отдельно от заказа — не отдаём висячую ссылку.
     projectId: db.projects.some((p) => p.id === order.projectId) ? order.projectId : null,
     engineerName: nameOf(db, order.engineerId),
     clientName: nameOf(db, order.clientId),
     side: order.clientId === userId ? 'client' : 'engineer',
   });
 
-  /** Заказ виден только его участникам; остальным — 404, как и проекты. */
   function orderOf(db: Db, id: string, user: StoredUser): Order {
     const order = db.orders.find((o) => o.id === id);
     if (!order || (order.clientId !== user.id && order.engineerId !== user.id)) {
@@ -370,13 +346,12 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
         request(async (db) => {
           const data = validate(loginSchema, input);
           const user = db.users.find((u) => u.email === normalizeEmail(data.email));
-          // Одинаковое сообщение для «нет такого e-mail» и «неверный пароль» — не помогаем перебору.
           const badCredentials = () =>
             new ApiError(401, 'BAD_CREDENTIALS', 'Неверный e-mail или пароль');
           const key = normalizeEmail(data.email);
           assertNotLocked(db, key);
           if (!user) {
-            registerFailure(db, key); // и для несуществующих адресов: поведение не выдаёт, кто зарегистрирован
+            registerFailure(db, key);
             throw badCredentials();
           }
           if (!(await verifyPassword(data.password, user.salt, user.passwordHash))) {
@@ -431,7 +406,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
           const user = currentUser(db);
           const data = validate(updateProfileSchema, input);
           user.name = data.name;
-          // имя автора в правках хранится копией — обновляем, чтобы не было старых имён
           for (const comment of db.comments) {
             if (comment.authorId === user.id) comment.authorName = data.name;
           }
@@ -455,7 +429,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
           await checkPassword(db, user, data.currentPassword, 'Текущий пароль указан неверно');
           user.salt = randomHex(8);
           user.passwordHash = await hashPassword(data.newPassword, user.salt);
-          // Новый токен: старый перестаёт действовать (так делают и после смены пароля на сервере).
           return openSession(db, user);
         }),
 
@@ -472,7 +445,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
           db.members = db.members.filter((m) => m.userId !== user.id);
           db.comments = db.comments.filter((c) => c.authorId !== user.id);
 
-          // Вместе с аккаунтом уходит всё, что на него ссылается: анкета, работы, заказы и отзывы.
           const tracks = db.portfolio.filter((t) => t.engineerId === user.id);
           db.engineers = db.engineers.filter((e) => e.userId !== user.id);
           db.portfolio = db.portfolio.filter((t) => t.engineerId !== user.id);
@@ -664,8 +636,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
         }, 2),
 
       audioUrl: async (file) => {
-        // Разрешены только демо-файлы из public/demo и свои файлы из IndexedDB.
-        // Любая другая схема (http:, javascript:, data:) — отказ.
         if (!SAFE_FILE_URL.test(file.fileUrl)) {
           throw new ApiError(400, 'UNSAFE_URL', 'Недопустимый адрес аудиофайла');
         }
@@ -766,7 +736,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
           return db.checklists.find((c) => c.versionId === versionId) ?? null;
         }),
 
-      // Генерация «думает» втрое дольше — как настоящий вызов LLM.
       generate: (versionId) =>
         request((db) => {
           const user = currentUser(db);
@@ -839,7 +808,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
         request((db) => {
           const viewer = viewerId(db);
           const profile = db.engineers.find((e) => e.userId === userId);
-          // Скрытую анкету видит только её хозяин; остальным она «не существует».
           if (!profile || (!profile.published && viewer !== userId)) {
             throw notFound('Звукорежиссёр');
           }
@@ -881,7 +849,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
             genres: data.genres,
             published: data.published,
             coverUrl: previous?.coverUrl ?? null,
-            // Чужой или выдуманный id услуги не принимаем: новые услуги получают id от сервера.
             services: data.services.map(({ id, ...service }) => ({
               ...service,
               id: id && known.has(id) ? id : newId('s'),
@@ -915,7 +882,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
             }
           }
           profile.coverUrl = image ? await readAsDataUrl(image) : null;
-          // updatedAt не трогаем: по нему форма анкеты пересоздаётся, а несохранённые правки терять нельзя.
           writeDb(db);
           return profile;
         }, 2),
@@ -1066,7 +1032,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
           };
 
           if (action === 'accept') {
-            // Принятый заказ превращается в проект: звукарь — владелец, заказчик — артист с правом правок.
             const client = nameOf(db, order.clientId);
             const created: Project = {
               id: newId('p'),
@@ -1149,7 +1114,6 @@ export function createLocalApi(options: LocalApiOptions): MixbackApi {
         request((db): Message => {
           const user = currentUser(db);
           const order = orderOf(db, orderId, user);
-          // В закрытом без результата заказе переписка только читается.
           if (order.status === 'declined' || order.status === 'cancelled') {
             throw new ApiError(409, 'ORDER_CLOSED', 'Заказ закрыт — писать в нём больше нельзя');
           }

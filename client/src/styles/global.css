@@ -1,12 +1,10 @@
-/* Дизайн-токены Mixback. Тёмная тема — по умолчанию, светлая включается атрибутом data-theme="light"
-   (его ставит /theme-init.js до отрисовки, чтобы не было вспышки). */
 :root {
   --bg: #0f0f10;
   --panel: #1c1c1e;
   --panel-2: #2a2a2d;
   --line: #3a3a3e;
   --text: #f2f2f3;
-  --muted: #a3a3a8; /* на --panel контраст 6.6:1 */
+  --muted: #a3a3a8;
   --accent: #ffffff;
   --on-accent: #0f0f10;
 
@@ -37,7 +35,7 @@
   --panel-2: #ececef;
   --line: #d3d3d9;
   --text: #18181b;
-  --muted: #595960; /* на белом 7:1, на --bg 6.3:1 */
+  --muted: #595960;
   --accent: #18181b;
   --on-accent: #ffffff;
 
@@ -132,7 +130,6 @@ textarea {
   color: inherit;
 }
 
-/* Уважаем настройку «уменьшить движение» */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -156,7 +153,6 @@ textarea {
   border: 0;
 }
 
-/* Подвал прижат к низу даже на коротких страницах */
 #root {
   display: flex;
   flex-direction: column;

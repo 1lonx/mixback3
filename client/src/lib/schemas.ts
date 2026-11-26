@@ -2,11 +2,6 @@ import { z } from 'zod';
 import type { FieldErrors } from './errors';
 import { cleanText } from './sanitize';
 
-/**
- * Схемы валидации. Используются формами (клиентская проверка) и мок-API
- * (имитирует серверную проверку). На этапе 4 их же можно подключить к Express.
- * Весь пользовательский текст сначала очищается (см. sanitize.ts), затем проверяется.
- */
 const clean = (inner: z.ZodType<string, string>) => z.string().transform(cleanText).pipe(inner);
 
 const email = clean(
@@ -22,7 +17,6 @@ const name = clean(
   z.string().trim().min(2, 'Имя — минимум 2 символа').max(40, 'Имя — не длиннее 40 символов'),
 );
 
-/** Политика пароля: длина, буква и цифра. bcrypt/argon2 усекают длинные пароли — потолок 72. */
 const newPassword = z
   .string()
   .min(8, 'Пароль — минимум 8 символов')
@@ -93,7 +87,6 @@ export const versionSchema = z.object({
 export const MAX_AUDIO_BYTES = 60 * 1024 * 1024;
 export const AUDIO_EXTENSIONS = ['mp3', 'wav', 'ogg', 'flac', 'm4a'] as const;
 
-/** Быстрая проверка по имени, типу и размеру. Содержимое проверяет fileLooksLikeAudio. */
 export function validateAudioFile(file: Pick<File, 'name' | 'size' | 'type'>): string | null {
   const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
   const looksLikeAudio = file.type.startsWith('audio/') || AUDIO_EXTENSIONS.some((e) => e === ext);
@@ -104,11 +97,9 @@ export function validateAudioFile(file: Pick<File, 'name' | 'size' | 'type'>): s
 }
 
 export const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
-/** Размер обложки после сжатия: в localStorage-моке лишнего места нет. */
 export const MAX_COVER_BYTES = 400 * 1024;
 export const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
 
-/** Быстрая проверка картинки по типу и размеру до сжатия. */
 export function validateImageFile(file: Pick<File, 'size' | 'type'>): string | null {
   if (!(IMAGE_TYPES as readonly string[]).includes(file.type)) {
     return 'Нужна картинка в формате JPEG, PNG или WebP';
@@ -120,7 +111,6 @@ export function validateImageFile(file: Pick<File, 'size' | 'type'>): string | n
 
 export type ParseResult<T> = { success: true; data: T } | { success: false; errors: FieldErrors };
 
-/** Превращает ошибки zod в плоский объект «поле → первое сообщение». */
 export function parseWith<T>(schema: z.ZodType<T>, input: unknown): ParseResult<T> {
   const result = schema.safeParse(input);
   if (result.success) return { success: true, data: result.data };
@@ -138,8 +128,6 @@ export type ProjectInput = z.infer<typeof projectSchema>;
 export type CommentInput = z.infer<typeof commentSchema>;
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
 
-// ───────── Маркетплейс ─────────
-
 const serviceKind = z.enum(['mixing', 'mastering', 'vocal', 'editing']);
 const genre = z.enum(['Поп', 'Рок', 'Хип-хоп', 'Электроника', 'Метал', 'Инди', 'Джаз', 'Фолк']);
 
@@ -148,7 +136,6 @@ export const MAX_GENRES = 4;
 export const MAX_PORTFOLIO_TRACKS = 8;
 
 export const serviceSchema = z.object({
-  /** Есть у уже сохранённых услуг; новым id выдаёт сервер. */
   id: z.string().max(40).optional(),
   kind: serviceKind,
   title: clean(

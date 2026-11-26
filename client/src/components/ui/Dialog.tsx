@@ -9,10 +9,6 @@ interface DialogProps {
   children: ReactNode;
 }
 
-/**
- * Модальное окно на нативном <dialog>: браузер сам ловит фокус внутри,
- * закрывает по Esc и делает остальную страницу недоступной.
- */
 export function Dialog({ open, title, onClose, children }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();

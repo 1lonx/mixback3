@@ -13,7 +13,6 @@ export interface AppApi {
   storage: KeyValueStore;
 }
 
-/** Собирает боевую реализацию API. На этапе 4 здесь появится HTTP-клиент. */
 export function createAppApi(): AppApi {
   const storage = createBrowserStorage();
   const defaultLatency = Number(import.meta.env.VITE_MOCK_LATENCY_MS ?? 350);
@@ -30,7 +29,6 @@ export function createAppApi(): AppApi {
   return { api, controls, storage };
 }
 
-/** Удаляет все локальные данные и возвращает демо-состояние при следующем запросе. */
 export function resetDemoData(storage: KeyValueStore): void {
   storage.removeItem(DB_KEY);
 }

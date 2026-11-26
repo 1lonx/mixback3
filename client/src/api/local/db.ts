@@ -32,7 +32,6 @@ export interface StoredSession {
   expiresAt: string;
 }
 
-/** Счётчик неудачных входов: после лимита вход временно блокируется (защита от перебора). */
 export interface LoginAttempt {
   count: number;
   lockedUntil: string | null;
@@ -55,14 +54,12 @@ export interface Db {
   loginAttempts: Record<string, LoginAttempt>;
 }
 
-/** Меняйте при несовместимых изменениях формата: старые данные будут пересозданы из seed. */
 export const SCHEMA_VERSION = 4;
 export const DB_KEY = 'mixback:db';
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;
 
-/** Грубая проверка формы: данные в localStorage мог испортить кто угодно. */
 function isDb(value: unknown): value is Db {
   return (
     isRecord(value) &&

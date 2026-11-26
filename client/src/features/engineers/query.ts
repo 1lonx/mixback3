@@ -9,10 +9,8 @@ export const DEFAULT_ENGINEERS_QUERY: EngineersQuery = {
 };
 
 const SORTS: readonly EngineerSort[] = ['rating', 'price', 'orders'];
-/** Ступени фильтра по цене — в поле «до» можно выбрать только их. */
 export const PRICE_STEPS = [2000, 3000, 5000, 8000] as const;
 
-/** Читает фильтры из адресной строки. Мусорные значения молча заменяются значениями по умолчанию. */
 export function parseEngineersQuery(params: URLSearchParams): EngineersQuery {
   const kind = params.get('kind');
   const genre = params.get('genre');
@@ -27,7 +25,6 @@ export function parseEngineersQuery(params: URLSearchParams): EngineersQuery {
   };
 }
 
-/** Обратное преобразование. Значения по умолчанию не пишем — адрес остаётся коротким. */
 export function toEngineersParams(query: EngineersQuery): URLSearchParams {
   const params = new URLSearchParams();
   if (query.q.trim()) params.set('q', query.q.trim());

@@ -15,7 +15,6 @@ import { restoreSession } from '../features/auth/authSlice';
 
 export const FIXED_NOW = new Date('2026-11-01T12:00:00.000Z');
 
-/** API на памяти без задержек, с фиксированным временем и предсказуемыми id. */
 export type TestApi = AppApi & { advanceTime: (ms: number) => void };
 
 export function createTestApi(): TestApi {
@@ -48,14 +47,11 @@ export async function loginAs(appApi: AppApi, who: 'owner' | 'artist' = 'owner')
 
 interface RenderOptions {
   appApi?: AppApi;
-  /** Адрес, с которого стартует приложение. */
   route?: string;
-  /** Если задан — перед рендером выполняется вход под этой ролью. */
   as?: 'owner' | 'artist';
   routes?: RouteObject[];
 }
 
-/** Рендерит приложение целиком (роутер + Redux + API) — для интеграционных тестов страниц. */
 export async function renderApp({
   appApi = createTestApi(),
   route = '/',
@@ -77,7 +73,6 @@ export async function renderApp({
   return { ...result, store, router, appApi };
 }
 
-/** Рендерит один компонент внутри Redux и API — для тестов отдельных блоков. */
 export async function renderWithStore(
   ui: ReactElement,
   options: Omit<RenderOptions, 'route' | 'routes'> = {},

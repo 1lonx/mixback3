@@ -4,7 +4,6 @@ import { NotFoundPage } from '../pages/NotFoundPage';
 import { RouteError } from '../pages/RouteError';
 import { AppLayout } from './AppLayout';
 
-/** Страницы подгружаются лениво: wavesurfer и плеер не попадают в начальный бандл. */
 export const appRoutes: RouteObject[] = [
   {
     path: '/',
@@ -86,6 +85,5 @@ export const appRoutes: RouteObject[] = [
 export const createAppRouter = () =>
   createBrowserRouter(appRoutes, { basename: import.meta.env.BASE_URL });
 
-/** Для тестов и Storybook: маршруты в памяти, без обращения к адресной строке. */
 export const createTestRouter = (initialEntries: string[]) =>
   createMemoryRouter(appRoutes, { initialEntries });

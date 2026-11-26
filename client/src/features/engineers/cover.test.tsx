@@ -5,7 +5,6 @@ import { DEMO_ENGINEERS, DEMO_PASSWORD } from '../../lib/demoAccounts';
 import { MAX_COVER_BYTES } from '../../lib/schemas';
 import { createTestApi, renderApp } from '../../test/utils';
 
-// В jsdom нет canvas и createImageBitmap — сжатие подменяем, остальной путь настоящий.
 const compressImage = vi.hoisted(() => vi.fn());
 vi.mock('../../lib/image', () => ({ compressImage }));
 

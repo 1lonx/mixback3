@@ -4,11 +4,9 @@ import styles from './HeroWave.module.css';
 
 const BARS = 44;
 
-/** Статичная «форма волны»: плавная огибающая, чтобы без анимации тоже выглядело как трек. */
 const baseHeight = (i: number) =>
   0.22 + 0.78 * Math.abs(Math.sin(i * 0.38) * Math.cos(i * 0.11 + 0.6));
 
-/** Декоративная пульсирующая волна над заголовком. Скрыта от скринридера, замирает при reduced-motion. */
 export function HeroWave() {
   const ref = useRef<HTMLDivElement>(null);
 

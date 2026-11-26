@@ -5,7 +5,6 @@ test.describe('ключевые сценарии (реальный браузе�
   test('звукорежиссёр: регистрация → проект → загрузка микса → правка → «решено» → данные переживают перезагрузку', async ({
     page,
   }) => {
-    // 1. Регистрация
     await page.goto('/login');
     await page.getByRole('radio', { name: 'Регистрация' }).click();
     await page.getByLabel('Имя').fill('Тест Инженер');
@@ -14,7 +13,6 @@ test.describe('ключевые сценарии (реальный браузе�
     await page.getByRole('button', { name: 'Создать аккаунт' }).click();
     await expect(page.getByText('Пока нет ни одного проекта')).toBeVisible();
 
-    // 2. Создание проекта (с проверкой валидации)
     await page.getByRole('link', { name: 'Создать проект' }).click();
     await page.getByRole('button', { name: 'Создать проект' }).click();
     await expect(page.getByText('Название — минимум 2 символа')).toBeVisible();
@@ -24,7 +22,6 @@ test.describe('ключевые сценарии (реальный браузе�
     await expect(page.getByRole('heading', { name: 'E2E Трек', level: 1 })).toBeVisible();
     await expect(page.getByText('Версий пока нет')).toBeVisible();
 
-    // 3. Загрузка настоящего WAV: браузер декодирует его и считает громкость
     await page.getByLabel('Аудиофайл').setInputFiles(makeWav());
     await page.getByLabel('Что изменилось').fill('Первый баланс');
     await page.getByRole('button', { name: 'Загрузить версию' }).click();
@@ -33,7 +30,6 @@ test.describe('ключевые сценарии (реальный браузе�
     await expect(page.getByText(/−1[45]\.\d LUFS/)).toBeVisible();
     await waitForPlayerReady(page);
 
-    // 4. Правка на таймкоде
     await page.getByLabel('Таймкод', { exact: true }).fill('0:02');
     await page.getByLabel('Что поправить').fill('Бочка бубнит, подрезать низ');
     await page.getByRole('button', { name: 'Добавить правку' }).click();
@@ -41,11 +37,9 @@ test.describe('ключевые сценарии (реальный браузе�
     await expect(comments.getByText('Бочка бубнит, подрезать низ')).toBeVisible();
     await expect(page.getByText('Открыто: 1 из 1')).toBeVisible();
 
-    // 5. Отметить решённой
     await comments.getByRole('button', { name: 'Решено' }).click();
     await expect(page.getByText('Открыто: 0 из 1')).toBeVisible();
 
-    // Правка применяется оптимистично — дожидаемся, пока она реально записана, и только потом перезагружаем.
     await expect
       .poll(() =>
         page.evaluate(() => {
@@ -57,13 +51,11 @@ test.describe('ключевые сценарии (реальный браузе�
       )
       .toBe(true);
 
-    // 6. Перезагрузка: проект, версия (из IndexedDB) и правка на месте
     await page.reload();
     await expect(page.getByRole('heading', { name: 'E2E Трек', level: 1 })).toBeVisible();
     await expect(page.getByText('Открыто: 0 из 1')).toBeVisible();
     await waitForPlayerReady(page);
 
-    // 7. Проект виден в списке
     await page.getByRole('link', { name: 'Проекты', exact: true }).click();
     await expect(page.getByRole('link', { name: 'E2E Трек' })).toBeVisible();
   });
@@ -74,7 +66,6 @@ test.describe('ключевые сценарии (реальный браузе�
     await loginAsDemo(page, 'artist');
     await page.getByRole('link', { name: 'Ночной город' }).click();
     await expect(page.getByRole('heading', { name: 'Ночной город', level: 1 })).toBeVisible();
-    // артисту недоступно управление проектом
     await expect(page.getByRole('button', { name: 'Удалить', exact: true })).toHaveCount(0);
     await expect(page.getByRole('heading', { name: 'AI-чек-лист' })).toHaveCount(0);
 
@@ -114,14 +105,12 @@ test.describe('ключевые сценарии (реальный браузе�
     await expect(page).toHaveURL(/\?v=2$/);
     await expect(page.getByText('Вокал всё ещё тихий')).toBeVisible();
 
-    // позиция не сбросилась в начало, воспроизведение идёт
     await expect.poll(() => sliderValue(page), { timeout: 15_000 }).toBeGreaterThanOrEqual(before);
     await expect(page.getByRole('button', { name: 'Пауза' })).toBeVisible();
   });
 
   test('сетевая ошибка: понятное сообщение и успешный повтор', async ({ page }) => {
     await loginAsDemo(page, 'owner');
-    // Переходы только внутри приложения (без перезагрузки): сессия остаётся в памяти.
     await page.getByRole('link', { name: 'О проекте' }).click();
     await page.getByLabel(/Имитировать сбой сети/).check();
     await page.getByRole('link', { name: 'Проекты' }).click();
@@ -142,7 +131,6 @@ test.describe('ключевые сценарии (реальный браузе�
     await page.goto('/projects');
     await expect(page.getByRole('alert')).toContainText('Не удалось проверить вход');
 
-    // «Починили» сеть в хранилище и нажали «Повторить»
     await page.evaluate(() => {
       window.localStorage.setItem(
         'mixback:mock',

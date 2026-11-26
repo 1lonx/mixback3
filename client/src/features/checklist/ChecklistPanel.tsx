@@ -26,7 +26,6 @@ function groupByCategory(items: readonly ChecklistItem[]) {
   return [...groups];
 }
 
-/** AI-чек-лист правок. Сейчас генерация локальная (имитация LLM), на этапе 4 — вызов LLM API. */
 export function ChecklistPanel({ versionId, onSeek }: ChecklistPanelProps) {
   const dispatch = useAppDispatch();
   const entry = useAppSelector((state) => selectChecklistEntry(state, versionId));

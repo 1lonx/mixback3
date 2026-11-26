@@ -1,7 +1,3 @@
-/**
- * Пики для отрисовки волны: делим сигнал на `buckets` равных отрезков и берём
- * максимальную амплитуду (по всем каналам) в каждом. Результат нормализован к 0..1.
- */
 export function computePeaks(channels: readonly Float32Array[], buckets: number): number[] {
   const first = channels[0];
   if (!first || first.length === 0 || buckets <= 0) return [];
@@ -28,7 +24,6 @@ export function computePeaks(channels: readonly Float32Array[], buckets: number)
   return peaks.map((p) => Math.round((p / top) * 1000) / 1000);
 }
 
-/** Максимальный по модулю отсчёт среди всех каналов, в dBFS. Для тишины — −Infinity. */
 export function samplePeakDb(channels: readonly Float32Array[]): number {
   let max = 0;
   for (const channel of channels) {

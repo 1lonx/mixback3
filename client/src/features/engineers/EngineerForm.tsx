@@ -20,7 +20,6 @@ import {
 } from '../../types/domain';
 import styles from './EngineerForm.module.css';
 
-/** Цена и срок в форме — строки: пустое поле не должно превращаться в 0. */
 interface ServiceDraft {
   key: string;
   id?: string;

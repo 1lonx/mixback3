@@ -26,7 +26,6 @@ export function resolveTheme(preference: ThemePreference): ResolvedTheme {
   return preference;
 }
 
-/** Применяет тему к <html> и сообщает подписчикам (плеер перекрашивает волну). */
 export function applyTheme(preference: ThemePreference): void {
   document.documentElement.setAttribute('data-theme', resolveTheme(preference));
   listeners.forEach((listener) => listener());
@@ -37,14 +36,13 @@ export function setPreference(preference: ThemePreference): void {
     if (preference === 'system') window.localStorage.removeItem(KEY);
     else window.localStorage.setItem(KEY, preference);
   } catch {
-    // Хранилище недоступно — тема просто не запомнится.
+    return;
   }
   applyTheme(preference);
 }
 
 function subscribe(listener: () => void): () => void {
   listeners.add(listener);
-  // Пока выбран «как в системе», следим за переключением темы в ОС.
   const media = systemMedia();
   const onSystemChange = () => {
     if (readPreference() === 'system') applyTheme('system');
@@ -68,7 +66,6 @@ export function useResolvedTheme(): ResolvedTheme {
   );
 }
 
-/** Читает цвет из CSS-переменной текущей темы (canvas не понимает var()). */
 export function cssColor(name: string, fallback: string): string {
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   return value || fallback;

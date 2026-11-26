@@ -3,7 +3,6 @@ import 'fake-indexeddb/auto';
 import { describe, expect, it } from 'vitest';
 import { createIndexedDbBlobStore } from './blobStore';
 
-// Окружение node: там Blob настоящий и клонируется в IndexedDB так же, как в браузере.
 describe('BlobStore (IndexedDB)', () => {
   it('put → get возвращает тот же файл', async () => {
     const store = createIndexedDbBlobStore();

@@ -11,11 +11,6 @@ interface ProjectFiltersProps {
   onChange: (patch: Partial<ProjectsQuery>) => void;
 }
 
-/**
- * Текст поиска хранится здесь и уходит в адрес с задержкой — не на каждую букву.
- * Если адрес изменился «снаружи» (кнопка «Назад», сброс фильтров), поле подстраивается:
- * это делается прямо при рендере, без эффекта, чтобы не было лишней отрисовки со старым текстом.
- */
 export function ProjectFilters({ query, onChange }: ProjectFiltersProps) {
   const [search, handleSearch] = useDebouncedSearch(query.q, (q) => onChange({ q }));
 

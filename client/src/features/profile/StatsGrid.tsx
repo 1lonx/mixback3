@@ -3,7 +3,6 @@ import { gsap, prefersReducedMotion, useGSAP } from '../../lib/motion';
 import type { ProfileStats } from '../../types/domain';
 import styles from './StatsGrid.module.css';
 
-/** Число, которое «набегает» от нуля. Без анимации сразу показывает итог. */
 function CountUp({ value }: { value: number }) {
   const ref = useRef<HTMLElement>(null);
 

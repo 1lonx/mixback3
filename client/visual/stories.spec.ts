@@ -6,11 +6,6 @@ interface StoryIndex {
 
 const THEMES = ['dark', 'light'] as const;
 
-/**
- * Читаем список историй из собранного Storybook и делаем скриншот каждой в обеих темах.
- * Новая story автоматически получает визуальный тест — достаточно один раз запустить
- * `npm run test:visual:update` и закоммитить эталон.
- */
 test.describe('визуальные состояния компонентов', () => {
   let stories: { id: string; title: string; name: string }[] = [];
 

@@ -11,15 +11,10 @@ import styles from './CommentComposer.module.css';
 
 interface CommentComposerProps {
   versionId: string;
-  /** Текущая позиция плеера, сек. */
   currentTime: number;
   durationSec: number;
 }
 
-/**
- * Форма новой правки. Таймкод «следует» за плеером, пока пользователь не начал печатать:
- * после первой буквы он фиксируется, иначе во время набора он бы убегал вперёд.
- */
 export function CommentComposer({ versionId, currentTime, durationSec }: CommentComposerProps) {
   const dispatch = useAppDispatch();
   const [text, setText] = useState('');

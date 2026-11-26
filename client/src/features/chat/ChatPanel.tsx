@@ -11,7 +11,6 @@ import {
   sendMessage,
 } from './messagesSlice';
 
-/** Как часто подтягиваем новые сообщения собеседника (в мок-API это обычный запрос, у сервера — WebSocket). */
 export const CHAT_POLL_MS = 5000;
 
 interface ChatPanelProps {

@@ -3,7 +3,6 @@ import { cx } from '../../lib/cx';
 import styles from './Card.module.css';
 
 interface CardProps extends ComponentProps<'section'> {
-  /** Подсвечивает карточку при наведении — для кликабельных карточек. */
   interactive?: boolean;
 }
 

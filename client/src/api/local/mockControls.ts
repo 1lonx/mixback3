@@ -1,6 +1,5 @@
 import type { KeyValueStore } from './storage';
 
-/** Настройки имитации сети: позволяют показать состояния загрузки и ошибки без сервера. */
 export interface MockSettings {
   latencyMs: number;
   failNetwork: boolean;

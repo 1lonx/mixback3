@@ -117,7 +117,6 @@ describe('ProjectPage — владелец', () => {
       await waitFor(() => expect(player().loadedUrl).not.toBeNull());
       const ws = player();
 
-      // v3: −10.6 LUFS, самая тихая версия проекта v1: −18.4 → множитель 10^(−7.8/20) ≈ 0,41
       expect(screen.getByLabelText(/Выровнять громкость версий/)).toBeChecked();
       expect(screen.getByText(/до −18.4 LUFS/)).toBeInTheDocument();
       await waitFor(() => expect(ws.volume).toBeCloseTo(0.407, 2));
@@ -128,7 +127,7 @@ describe('ProjectPage — владелец', () => {
       await userEvent.click(screen.getByLabelText(/Выровнять громкость версий/));
       await userEvent.click(screen.getByRole('radio', { name: 'v1' }));
       await waitFor(() => expect(ws.loadedUrl).not.toBeNull());
-      expect(ws.volume).toBe(1); // v1 — эталон
+      expect(ws.volume).toBe(1);
     });
 
     it('кнопка «Играть/Пауза» управляет воспроизведением после загрузки волны', async () => {
@@ -216,7 +215,7 @@ describe('ProjectPage — владелец', () => {
       await waitFor(() => expect(time).toHaveValue('1:15'));
       await userEvent.type(screen.getByLabelText('Что поправить'), 'Гитара слишком громкая');
 
-      act(() => player().setTime(120)); // плеер убежал вперёд — таймкод правки не должен
+      act(() => player().setTime(120));
       expect(time).toHaveValue('1:15');
 
       await userEvent.click(screen.getByRole('button', { name: 'Добавить правку' }));
@@ -237,7 +236,7 @@ describe('ProjectPage — владелец', () => {
       const texts = within(commentsList())
         .getAllByRole('listitem')
         .map((li) => li.textContent);
-      expect(texts[1]).toContain('Ранняя правка'); // после правки на 0:12, перед 0:34
+      expect(texts[1]).toContain('Ранняя правка');
     });
 
     it('неверный формат таймкода и короткий текст — ошибки без запроса', async () => {
@@ -351,7 +350,6 @@ describe('ProjectPage — владелец', () => {
       expect(within(lowGroup).getByText('Бочка бубнит, подрезать низ?')).toBeInTheDocument();
       expect(screen.getByRole('region', { name: 'Вокал' })).toBeInTheDocument();
       expect(screen.getByRole('region', { name: 'Верха' })).toBeInTheDocument();
-      // «Расширить стерео» решена, а «ревер на вокале» относится к вокалу — раздела «Пространство» нет.
       expect(screen.queryByRole('region', { name: 'Пространство' })).not.toBeInTheDocument();
       expect(screen.getByText(/Выполнено 0 из/)).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Пересобрать' })).toBeInTheDocument();
@@ -507,7 +505,7 @@ describe('ProjectPage — артист', () => {
     expect(within(own).getByRole('button', { name: /Удалить правку/ })).toBeInTheDocument();
 
     const foreign = screen.getByText(/Ревер на вокале слишком длинный/).closest('li')!;
-    expect(within(foreign).queryByRole('button')).toHaveProperty('tagName', 'BUTTON'); // только кнопка времени
+    expect(within(foreign).queryByRole('button')).toHaveProperty('tagName', 'BUTTON');
     expect(within(foreign).queryByRole('button', { name: 'Решено' })).not.toBeInTheDocument();
     expect(
       within(foreign).queryByRole('button', { name: /Удалить правку/ }),

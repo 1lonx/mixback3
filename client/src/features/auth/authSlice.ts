@@ -6,7 +6,6 @@ import type { LoginInput, RegisterInput } from '../../lib/schemas';
 import type { User } from '../../types/domain';
 import type { RootState } from '../../app/store';
 
-// `void` — идиома RTK: такой thunk вызывается без аргумента, dispatch(restoreSession()).
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
 export const restoreSession = apiThunk('auth/restoreSession', (_: void, { api }) => api.auth.me());
 
@@ -42,9 +41,7 @@ export const deleteAccount = apiThunk(
 
 export interface AuthState {
   user: User | null;
-  /** Проверили ли сохранённую сессию. Пока false — защищённые страницы не решают, куда редиректить. */
   initialized: boolean;
-  /** Не удалось проверить сессию (например, нет сети): это не то же самое, что «не вошли». */
   sessionError: SerializedError | null;
   status: LoadStatus;
   error: SerializedError | null;
@@ -75,7 +72,6 @@ const authSlice = createSlice({
         state.user = payload;
         state.initialized = true;
       })
-      // Сессию проверить не удалось: показываем экран с повтором вместо молчаливого «вы не вошли».
       .addCase(restoreSession.rejected, (state, action) => {
         state.user = null;
         state.initialized = true;
@@ -91,7 +87,6 @@ const authSlice = createSlice({
         .addCase(thunk.fulfilled, (state, { payload }) => {
           state.status = 'succeeded';
           state.user = payload;
-          // После выхода состояние сброшено целиком: успешный вход сам по себе означает «сессия известна».
           state.initialized = true;
           state.sessionError = null;
         })
@@ -105,7 +100,6 @@ const authSlice = createSlice({
       state.user = payload;
     });
 
-    // Выход чистит и локальное состояние, даже если запрос не дошёл: пользователь хотел выйти.
     builder.addCase(logout.pending, (state) => {
       state.user = null;
       state.status = 'idle';

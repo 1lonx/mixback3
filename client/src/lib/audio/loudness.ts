@@ -1,14 +1,6 @@
-/**
- * Интегральная громкость по ITU-R BS.1770-4 (LUFS):
- *  1. K-взвешивание: высокочастотная «полка» + фильтр высоких частот (два биквада);
- *  2. средний квадрат в блоках по 400 мс с шагом 100 мс (перекрытие 75 %);
- *  3. абсолютный гейт −70 LUFS и относительный гейт −10 LU от среднего.
- * Каналы суммируются с весом 1 (подходит для моно и стерео).
- */
-
 interface Biquad {
   b: [number, number, number];
-  a: [number, number]; // a0 = 1
+  a: [number, number];
 }
 
 function shelfFilter(sampleRate: number): Biquad {
@@ -67,7 +59,6 @@ function applyBiquad(input: Float32Array | Float64Array, filter: Biquad): Float6
 
 const toLufs = (meanSquare: number) => -0.691 + 10 * Math.log10(meanSquare);
 
-/** Интегральная громкость в LUFS. Для слишком короткой или тихой записи возвращает −Infinity. */
 export function measureLoudness(channels: readonly Float32Array[], sampleRate: number): number {
   const first = channels[0];
   if (!first || sampleRate <= 0) return -Infinity;
@@ -80,7 +71,6 @@ export function measureLoudness(channels: readonly Float32Array[], sampleRate: n
   const highPass = highPassFilter(sampleRate);
   const weighted = channels.map((ch) => applyBiquad(applyBiquad(ch, shelf), highPass));
 
-  // Префиксные суммы квадратов позволяют считать каждый блок за O(1).
   const prefix = weighted.map((ch) => {
     const sums = new Float64Array(ch.length + 1);
     for (let i = 0; i < ch.length; i++) sums[i + 1] = (sums[i] ?? 0) + (ch[i] ?? 0) ** 2;

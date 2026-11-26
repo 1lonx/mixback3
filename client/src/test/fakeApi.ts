@@ -8,7 +8,6 @@ type Deep<T> = {
     : Deep<T[K]>;
 };
 
-/** Полностью «заглушенный» API: каждый метод — vi.fn, который по умолчанию падает, если его не настроили. */
 export function createFakeApi(): Deep<MixbackApi> {
   const unset = (name: string) =>
     vi.fn(() => Promise.reject(new Error(`fakeApi.${name} не настроен в тесте`)));
@@ -65,7 +64,6 @@ export function createFakeApi(): Deep<MixbackApi> {
   };
 }
 
-/** Промис, который разрешается вручную, — чтобы проверять промежуточные состояния и порядок ответов. */
 export function deferred<T>() {
   let resolve!: (value: T) => void;
   let reject!: (reason: unknown) => void;
