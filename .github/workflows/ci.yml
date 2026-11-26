@@ -50,4 +50,5 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: client/dist
+      - run: sleep 30
       - uses: actions/deploy-pages@v4
