@@ -1,0 +1,65 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.form > * {
+  align-self: stretch;
+}
+
+.form > button {
+  align-self: flex-start;
+}
+
+.rating {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rating legend {
+  padding: 0;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  position: relative;
+  font-size: 1.9rem;
+  line-height: 1;
+  color: var(--line);
+  cursor: pointer;
+  transition: color 0.12s;
+}
+
+.star.on {
+  color: var(--warning);
+}
+
+/* Радиокнопка скрыта визуально, но остаётся в потоке: фокус виден на звезде */
+.input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.star:has(.input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.error {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+  color: var(--danger);
+}

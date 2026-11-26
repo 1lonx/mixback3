@@ -1,0 +1,38 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.formError {
+  padding: 10px 14px;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+}
+
+.demo {
+  width: 100%;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.demoTitle {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.demoButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

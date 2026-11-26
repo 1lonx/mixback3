@@ -1,0 +1,20 @@
+.card {
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.interactive {
+  transition:
+    border-color 0.15s,
+    transform 0.15s;
+}
+
+.interactive:hover,
+.interactive:focus-within {
+  border-color: var(--muted);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}

@@ -1,0 +1,71 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.control {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.15s;
+}
+
+.control::placeholder {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+.control:hover:not(:disabled) {
+  border-color: var(--muted);
+}
+
+.control:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 0;
+  border-color: var(--focus);
+}
+
+.control:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.invalid {
+  border-color: var(--danger);
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.error {
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+.control::file-selector-button {
+  margin-right: 12px;
+  padding: 6px 14px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}

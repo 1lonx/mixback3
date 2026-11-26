@@ -1,0 +1,54 @@
+.group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+  padding: 4px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.option:hover {
+  color: var(--text);
+}
+
+.active {
+  color: var(--on-accent);
+  background: var(--accent);
+}
+
+.active:hover {
+  color: var(--on-accent);
+}
+
+/* Радиокнопка скрыта визуально, но остаётся в потоке для клавиатуры и скринридера */
+.input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.option:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}

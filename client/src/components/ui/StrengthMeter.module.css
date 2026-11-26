@@ -1,0 +1,37 @@
+.meter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.bar {
+  height: 5px;
+  background: var(--line);
+  border-radius: 3px;
+  transition: background-color 0.3s;
+}
+
+.level0,
+.level1 {
+  background: var(--danger);
+}
+.level2 {
+  background: var(--warning);
+}
+.level3 {
+  background: var(--success);
+}
+.level4 {
+  background: var(--success);
+}
+
+.label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}

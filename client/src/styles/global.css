@@ -1,0 +1,168 @@
+/* Дизайн-токены Mixback. Тёмная тема — по умолчанию, светлая включается атрибутом data-theme="light"
+   (его ставит /theme-init.js до отрисовки, чтобы не было вспышки). */
+:root {
+  --bg: #0f0f10;
+  --panel: #1c1c1e;
+  --panel-2: #2a2a2d;
+  --line: #3a3a3e;
+  --text: #f2f2f3;
+  --muted: #a3a3a8; /* на --panel контраст 6.6:1 */
+  --accent: #ffffff;
+  --on-accent: #0f0f10;
+
+  --success: #5fd38d;
+  --danger: #ff7b7b;
+  --warning: #f2c14e;
+  --focus: #7aa7ff;
+
+  --wave: #5f5f63;
+  --wave-progress: #f2f2f3;
+  --glow: rgb(122 167 255 / 11%);
+  --shadow: 0 1px 2px rgb(0 0 0 / 30%);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 45%);
+
+  --radius: 14px;
+  --radius-sm: 8px;
+  --gap: 16px;
+  --container: 1120px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f4f4f6;
+  --panel: #ffffff;
+  --panel-2: #ececef;
+  --line: #d3d3d9;
+  --text: #18181b;
+  --muted: #595960; /* на белом 7:1, на --bg 6.3:1 */
+  --accent: #18181b;
+  --on-accent: #ffffff;
+
+  --success: #17753f;
+  --danger: #c0312b;
+  --warning: #8a5700;
+  --focus: #2457d6;
+
+  --wave: #b4b4bc;
+  --wave-progress: #18181b;
+  --glow: rgb(36 87 214 / 9%);
+  --shadow: 0 1px 2px rgb(24 24 27 / 8%);
+  --shadow-lg: 0 12px 32px rgb(24 24 27 / 16%);
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text);
+  background:
+    radial-gradient(900px 420px at 85% -8%, var(--glow), transparent 70%),
+    radial-gradient(700px 360px at 0% 0%, var(--glow), transparent 70%), var(--bg);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+h1 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+}
+h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+h3 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+p {
+  margin: 0;
+}
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+a {
+  color: inherit;
+}
+code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  padding: 0.1em 0.4em;
+  border-radius: 5px;
+  background: var(--panel-2);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Уважаем настройку «уменьшить движение» */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Подвал прижат к низу даже на коротких страницах */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#root > main {
+  flex: 1;
+}

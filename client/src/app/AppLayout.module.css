@@ -1,0 +1,167 @@
+.skip {
+  position: absolute;
+  left: 16px;
+  top: -64px;
+  z-index: 200;
+  padding: 10px 16px;
+  font-weight: 600;
+  color: var(--on-accent);
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  transition: top 0.2s;
+}
+
+.skip:focus {
+  top: 12px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  width: 100%;
+  max-width: var(--container);
+  min-height: 64px;
+  margin: 0 auto;
+  padding: 8px 16px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.logoMark {
+  width: 22px;
+  height: 22px;
+  background:
+    linear-gradient(var(--accent), var(--accent)) 3px 8px / 3px 6px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 9px 3px / 3px 16px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 15px 6px / 3px 10px no-repeat;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-right: auto;
+}
+
+.navLink {
+  padding: 8px 14px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: 999px;
+}
+
+.navLink:hover {
+  color: var(--text);
+}
+
+.navActive {
+  color: var(--text);
+  background: var(--panel-2);
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.userName {
+  max-width: 14ch;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.main {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+.main:focus {
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding-top: 24px;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  /* Четыре ссылки (звукорежиссёры, заказы, проекты, о проекте) должны помещаться в 360–412 px */
+  .navLink {
+    padding: 8px 10px;
+  }
+
+  .user {
+    margin-left: auto;
+  }
+}
+
+.profileLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 999px;
+  transition: background-color 0.2s;
+}
+
+.profileLink:hover {
+  background: var(--panel-2);
+}
+
+.footer {
+  border-top: 1px solid var(--line);
+}
+
+.footerBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 24px;
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 20px 16px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.footerNav {
+  display: flex;
+  gap: 16px;
+}
+
+.footerNav a {
+  color: inherit;
+}

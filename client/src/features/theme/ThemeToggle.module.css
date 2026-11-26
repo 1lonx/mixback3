@@ -1,0 +1,29 @@
+.toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--text);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition:
+    background-color 0.2s,
+    transform 0.3s;
+}
+
+.toggle:hover {
+  background: var(--panel-2);
+  transform: rotate(18deg);
+}
+
+.toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

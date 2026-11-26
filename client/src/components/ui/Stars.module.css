@@ -1,0 +1,23 @@
+.stars {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: 0.95rem;
+}
+
+.star {
+  color: var(--warning);
+}
+
+.value {
+  font-weight: 700;
+}
+
+.count,
+.none {
+  color: var(--muted);
+}
+
+.none {
+  font-size: 0.9rem;
+}

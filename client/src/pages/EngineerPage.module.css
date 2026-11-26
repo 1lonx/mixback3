@@ -1,0 +1,171 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  background: radial-gradient(500px 200px at 100% 0%, var(--glow), transparent 70%), var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.heroText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.heroText h1 {
+  overflow-wrap: anywhere;
+}
+
+.headline {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+}
+
+.genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.notice {
+  margin: 0;
+  padding: 12px 16px;
+  color: var(--warning);
+  border: 1px solid var(--warning);
+  border-radius: var(--radius-sm);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bio {
+  max-width: 70ch;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.services,
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  background: var(--panel-2);
+  border-radius: var(--radius-sm);
+}
+
+.serviceText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.serviceText h3 {
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.serviceBuy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.price {
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.review:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.reviewHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
+.review p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .service {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .serviceBuy {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.cover {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 360px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}

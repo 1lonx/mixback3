@@ -1,0 +1,21 @@
+.filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filters > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}

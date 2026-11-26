@@ -1,0 +1,107 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.error {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--danger);
+}
+
+.genres {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.genres legend {
+  padding: 0;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.genreList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.genre,
+.publish {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.genre input,
+.publish input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--text);
+}
+
+.services {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px;
+  background: var(--panel-2);
+  border-radius: var(--radius-sm);
+}
+
+.serviceFields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.serviceFields legend {
+  padding: 0;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 560px) {
+  .serviceFields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
