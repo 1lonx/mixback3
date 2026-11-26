@@ -1,4 +1,5 @@
-# Mixback — frontend MVP (этап 3)
+#Mixback — frontend MVP (этап 3)
+https://1lonx.github.io/mixback3/
 
 Mixback — сервис фидбэка на сведение музыки: комментарии на таймкодах волны, версии микса, A/B-сравнение с выравниванием громкости по LUFS и чек-лист правок.
 
